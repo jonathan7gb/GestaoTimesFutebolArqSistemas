@@ -1,4 +1,6 @@
 package br.com.weg.infra.persistence;
 
-public class UsuarioRepositoryImpl {
+import br.com.weg.domain.repository.UsuarioRepository;
+
+public class UsuarioRepositoryImpl implements UsuarioRepository {
 }

@@ -1,4 +1,6 @@
 package br.com.weg.infra.persistence;
 
-public class ClubeRepositoryImpl {
+import br.com.weg.domain.repository.ClubeRepository;
+
+public class ClubeRepositoryImpl implements ClubeRepository {
 }
