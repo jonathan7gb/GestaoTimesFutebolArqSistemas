@@ -1,4 +1,8 @@
 package br.com.weg.application.dto.Usuario;
 
-public class UsuarioRequestDTO {
+public record UsuarioRequestDTO (String nome,
+                                 double peso,
+                                 int altura,
+                                 String tipo,
+                                 int idClube){
 }
