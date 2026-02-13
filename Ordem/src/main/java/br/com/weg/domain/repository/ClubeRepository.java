@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface ClubeRepository {
-    Clube salvarClube(Clube clube) throws SQLException;
+    Clube criarClube(Clube clube) throws SQLException;
     List<Clube> listarClubes() throws SQLException;
     Clube existeId(int id) throws SQLException;
 }
