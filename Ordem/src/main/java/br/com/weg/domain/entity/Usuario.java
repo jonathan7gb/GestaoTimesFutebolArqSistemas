@@ -1,15 +1,17 @@
 package br.com.weg.domain.entity;
 
+import br.com.weg.domain.enums.TipoUsuario;
+
 public class Usuario {
 
     private int id;
     private String nome;
     private double peso;
     private int altura;
-    private String tipo;
+    private TipoUsuario tipo;
     private int idClube;
 
-    public Usuario(int id, String nome, double peso, int altura, String tipo, int idClube) {
+    public Usuario(int id, String nome, double peso, int altura, TipoUsuario tipo, int idClube) {
         this.id = id;
         this.nome = nome;
         this.peso = peso;
@@ -18,7 +20,7 @@ public class Usuario {
         this.idClube = idClube;
     }
 
-    public Usuario(String nome, double peso, int altura, String tipo, int idClube) {
+    public Usuario(String nome, double peso, int altura, TipoUsuario tipo, int idClube) {
         this.nome = nome;
         this.peso = peso;
         this.altura = altura;
@@ -58,11 +60,11 @@ public class Usuario {
         this.altura = altura;
     }
 
-    public String getTipo() {
+    public TipoUsuario getTipo() {
         return tipo;
     }
 
-    public void setTipo(String tipo) {
+    public void setTipo(TipoUsuario tipo) {
         this.tipo = tipo;
     }
 
