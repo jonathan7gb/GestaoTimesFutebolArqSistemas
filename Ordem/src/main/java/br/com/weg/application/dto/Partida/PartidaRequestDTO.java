@@ -1,9 +1,10 @@
 package br.com.weg.application.dto.Partida;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public record PartidaRequestDTO (int idClubeA,
                                  int idClubeB,
-                                 LocalDateTime dataHoraPartida,
+                                 LocalDate dataHoraPartida,
                                  String localizacao){
 }

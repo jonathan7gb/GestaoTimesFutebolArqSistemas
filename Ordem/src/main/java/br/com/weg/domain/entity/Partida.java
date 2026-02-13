@@ -1,16 +1,16 @@
 package br.com.weg.domain.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public class Partida {
 
     private int id;
     private int idClubeA;
     private int idClubeB;
-    private LocalDateTime dataHoraPartida;
+    private LocalDate dataHoraPartida;
     private String localizacao;
 
-    public Partida(int id, int idClubeA, int idClubeB, LocalDateTime dataHoraPartida, String localizacao) {
+    public Partida(int id, int idClubeA, int idClubeB, LocalDate dataHoraPartida, String localizacao) {
         this.id = id;
         this.idClubeA = idClubeA;
         this.idClubeB = idClubeB;
@@ -18,7 +18,7 @@ public class Partida {
         this.localizacao = localizacao;
     }
 
-    public Partida(int idClubeA, int idClubeB, LocalDateTime dataHoraPartida, String localizacao) {
+    public Partida(int idClubeA, int idClubeB, LocalDate dataHoraPartida, String localizacao) {
         this.idClubeA = idClubeA;
         this.idClubeB = idClubeB;
         this.dataHoraPartida = dataHoraPartida;
@@ -49,11 +49,11 @@ public class Partida {
         this.idClubeB = idClubeB;
     }
 
-    public LocalDateTime getDataHoraPartida() {
+    public LocalDate getDataHoraPartida() {
         return dataHoraPartida;
     }
 
-    public void setDataHoraPartida(LocalDateTime dataHoraPartida) {
+    public void setDataHoraPartida(LocalDate dataHoraPartida) {
         this.dataHoraPartida = dataHoraPartida;
     }
 
