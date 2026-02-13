@@ -1,4 +1,4 @@
 package br.com.weg.domain.repository;
 
-public class PartidaRepository {
+public interface PartidaRepository {
 }
