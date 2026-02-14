@@ -9,5 +9,5 @@ public interface PartidaRepository {
 
     Partida criarPartida (Partida partida) throws SQLException;
     List<Partida> listarPartidas () throws SQLException;
-    void buscarPartidaPorClube(int id) throws SQLException;
+    List<Partida> buscarPartidaPorClube(int clubeId) throws SQLException;
 }
