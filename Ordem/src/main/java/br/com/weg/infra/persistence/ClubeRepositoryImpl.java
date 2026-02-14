@@ -12,7 +12,7 @@ public class ClubeRepositoryImpl implements ClubeRepository {
 
 
     @Override
-    public Clube salvarClube(Clube clube) throws SQLException {
+    public Clube criarClube(Clube clube) throws SQLException {
 
         String sql = """
                 INSERT INTO clube (
