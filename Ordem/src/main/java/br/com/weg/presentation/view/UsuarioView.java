@@ -1,6 +1,8 @@
 package br.com.weg.presentation.view;
 
+import br.com.weg.application.dto.Clube.ClubeResponseDTO;
 import br.com.weg.application.dto.Usuario.UsuarioRequestDTO;
+import br.com.weg.application.dto.Usuario.UsuarioResponseDTO;
 import br.com.weg.domain.enums.TipoUsuario;
 import br.com.weg.presentation.view.helpers.InputHelper;
 
@@ -66,5 +68,16 @@ public class UsuarioView {
         }
         int idClube = InputHelper.inputInteger("| Id do clube: ", sc);
         return  new UsuarioRequestDTO(nome, peso, altura, tipoUsuario, idClube);
+    }
+
+    public void mostrarUsuario(UsuarioResponseDTO usuarioResponseDTO, String nomeClube){
+        System.out.println("| =========================== |");
+        System.out.println("| ID: " + usuarioResponseDTO.id());
+        System.out.println("| NOME: " + usuarioResponseDTO.nome());
+        System.out.println("| PESO: " + usuarioResponseDTO.peso());
+        System.out.println("| ALTURA: " + usuarioResponseDTO.altura());
+        System.out.println("| TIPO: " + usuarioResponseDTO.tipo());
+        System.out.println("| CLUBE: " + nomeClube);
+        System.out.println("| =========================== |");
     }
 }
