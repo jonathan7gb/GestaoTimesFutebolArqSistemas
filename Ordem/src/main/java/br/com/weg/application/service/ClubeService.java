@@ -23,6 +23,8 @@ public class ClubeService {
         } catch (SQLException e ){
             MessageHelper.error("Erro ao salvar clube");
         }
+
+        MessageHelper.success("Clube Cadastrado com Sucesso!");
         return clubeMapper.toDto(clubeSalvo);
     }
 }
