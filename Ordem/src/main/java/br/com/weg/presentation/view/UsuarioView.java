@@ -1,5 +1,7 @@
 package br.com.weg.presentation.view;
 
+import br.com.weg.application.dto.Usuario.UsuarioRequestDTO;
+import br.com.weg.domain.enums.TipoUsuario;
 import br.com.weg.presentation.view.helpers.InputHelper;
 
 import java.util.Scanner;
@@ -41,5 +43,28 @@ public class UsuarioView {
                 | 0 - SAIR DO SISTEMA           |
                 | ============================= |""") ;
         return InputHelper.inputInteger("| ? - SUA ESCOLHA: ", sc);
+    }
+
+    public UsuarioRequestDTO criarUsuario(){
+        TipoUsuario tipoUsuario = null;
+        System.out.println("| ==== CRIAR USUÁRIO ==== |");
+        String nome = InputHelper.inputString("| Nome: ", sc);
+        double peso = InputHelper.inputDouble("| Peso: ", sc);
+        int altura = InputHelper.inputInteger("| Altura (cm): ", sc);
+        int tipo = InputHelper.inputInteger("""
+                | Tipo de Usuário
+                | 1 - JOGADOR
+                | 2 - COMISSÃO TÉCNICA
+                | 3 - PRESIDENTE
+                | 4 - ADMIN
+                | Insira o tipo do usuário: """, sc);
+
+        try {
+            tipoUsuario = TipoUsuario.values()[tipo - 1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException("Escolha inválida");
+        }
+        int idClube = InputHelper.inputInteger("| Id do clube: ", sc);
+        return  new UsuarioRequestDTO(nome, peso, altura, tipoUsuario, idClube);
     }
 }
