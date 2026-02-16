@@ -33,17 +33,19 @@ public class MainController {
             case 1 -> {
                 int escolhaJogador = usuarioView.jogadorMenu();
                 System.out.println();
+
+
             }
             case 2 -> {
-                int escolhaJogador = usuarioView.comissaoMenu();
+                int escolhaComissao = usuarioView.comissaoMenu();
                 System.out.println();
             }
             case 3 -> {
-                int escolhaJogador = usuarioView.presidenteMenu();
+                int escolhaPresidente = usuarioView.presidenteMenu();
                 System.out.println();
             }
             case 4 -> {
-                int escolhaJogador = adminView.adminMenu();
+                int escolhaAdmin = adminView.adminMenu();
                 System.out.println();
             }
             case 0 -> {
