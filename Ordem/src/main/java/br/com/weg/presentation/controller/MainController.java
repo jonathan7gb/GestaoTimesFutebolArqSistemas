@@ -8,6 +8,7 @@ import br.com.weg.presentation.view.AdminView;
 import br.com.weg.presentation.view.ClubeView;
 import br.com.weg.presentation.view.PartidaView;
 import br.com.weg.presentation.view.UsuarioView;
+import br.com.weg.presentation.view.helpers.MessageHelper;
 
 public class MainController {
 
@@ -31,15 +32,25 @@ public class MainController {
         switch (escolhaPrincipal){
             case 1 -> {
                 int escolhaJogador = usuarioView.jogadorMenu();
+                System.out.println();
             }
             case 2 -> {
                 int escolhaJogador = usuarioView.comissaoMenu();
+                System.out.println();
             }
             case 3 -> {
                 int escolhaJogador = usuarioView.presidenteMenu();
+                System.out.println();
             }
             case 4 -> {
                 int escolhaJogador = adminView.adminMenu();
+                System.out.println();
+            }
+            case 0 -> {
+                return;
+            }
+            default -> {
+                MessageHelper.error("Escolha inválida");
             }
         }
     }

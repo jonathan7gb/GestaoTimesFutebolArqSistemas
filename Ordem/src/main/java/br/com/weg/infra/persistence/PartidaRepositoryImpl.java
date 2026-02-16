@@ -106,7 +106,7 @@ public class PartidaRepositoryImpl implements PartidaRepository {
                         rs.getInt("id"),
                         rs.getInt(" id_clube_a"),
                         rs.getInt(" id_clube_b"),
-                        rs.getObject("data_hora", LocalDateTime.class),
+                        rs.getObject("data_hora", LocalDate.class),
                         rs.getString("local")
                 );
                 partidas.add(partida);
