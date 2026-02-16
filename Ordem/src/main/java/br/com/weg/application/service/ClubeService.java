@@ -21,10 +21,10 @@ public class ClubeService {
         try{
             clubeSalvo = clubeRepository.criarClube(clube);
         } catch (SQLException e ){
-            MessageHelper.error("Erro ao salvar clube");
+            MessageHelper.error("Erro ao salvar clube\n");
         }
 
-        MessageHelper.success("Clube Cadastrado com Sucesso!");
+        MessageHelper.success("Clube Cadastrado com Sucesso!\n");
         return clubeMapper.toDto(clubeSalvo);
     }
 }
