@@ -9,6 +9,19 @@ public class AdminView {
 
     Scanner sc = new Scanner(System.in);
 
+    public int menuPrincipal(){
+        System.out.println("""
+                | ====== MENU PRINCIPAL ====== |
+                | 1 - MENU JOGADOR             |
+                | 2 - MENU COMISSÃO TÉCNICA    |
+                | 3 - MENU PRESIDENTE          |
+                | 4 - MENU ADMIN               |
+                | ============================ |
+                | 0 - SAIR DO SISTEMA          |
+                | ============================ |""");
+        return InputHelper.inputInteger("| ? - SUA ESCOLHA: ", sc);
+    }
+
     public int adminMenu(){
         System.out.println("""
                 | ====== MENU ADMIN ====== |

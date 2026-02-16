@@ -6,6 +6,7 @@ import br.com.weg.infra.database.Conexao;
 
 import java.net.ConnectException;
 import java.sql.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +69,7 @@ public class PartidaRepositoryImpl implements PartidaRepository {
                         rs.getInt("id"),
                         rs.getInt(" id_clube_a"),
                         rs.getInt(" id_clube_b"),
-                        rs.getObject("data_hora", LocalDateTime.class),
+                        rs.getObject("data_hora", LocalDate.class),
                         rs.getString("local")
                 );
 
