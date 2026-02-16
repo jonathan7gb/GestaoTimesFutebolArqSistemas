@@ -26,10 +26,11 @@ public class ClubeView {
     }
 
     public void mostrarClube(ClubeResponseDTO clubeResponseDTO){
-        System.out.println("| ======================= |");
+        System.out.println("| =========================== |");
+        System.out.println("| ID: " + clubeResponseDTO.id());
         System.out.println("| NOME: " + clubeResponseDTO.nome());
         System.out.println("| ANO FUNDAÇÃO: " + clubeResponseDTO.anoFundacao());
         System.out.println("| PAÍS: " + clubeResponseDTO.pais());
-        System.out.println("| ======================= |");
+        System.out.println("| =========================== |");
     }
 }

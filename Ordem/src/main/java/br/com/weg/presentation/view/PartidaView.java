@@ -25,6 +25,14 @@ public class PartidaView {
         return new PartidaRequestDTO(clubeA, clubeB, dataHora, localizacao);
     }
 
+    public PartidaRequestDTO criarPartidaPresidente(PartidaRequestDTO partidaRequestDTO, int idClubeA){
+        System.out.println("\n| ====== CRIAR PARTIDA ====== |");
+        int clubeB = InputHelper.inputInteger("| Insira o id do clube adversário: ", sc);
+        LocalDate dataHora = InputHelper.inputDate("| Insira a data da partida: ", sc);
+        String localizacao = InputHelper.inputString("| Insira a localização da partida: ", sc);
+        return new PartidaRequestDTO(idClubeA, clubeB, dataHora, localizacao);
+    }
+
     public void listarPartidas(List<PartidaResponseDTO> dtoList , String nomeClubeA, String nomeClubeB){
         for(PartidaResponseDTO c : dtoList){
             mostrarPartida(c, nomeClubeA, nomeClubeB);
@@ -32,9 +40,9 @@ public class PartidaView {
     }
 
     public void mostrarPartida(PartidaResponseDTO partidaResponseDTO, String nomeClubeA, String nomeClubeB){
-        System.out.println("| ======================= |");
+        System.out.println("| ============================= |");
         System.out.println("| " + nomeClubeA + " x " + nomeClubeB);
         System.out.println("| " + partidaResponseDTO.dataHoraPartida() + " | " + partidaResponseDTO.localizacao());
-        System.out.println("| ======================= |");
+        System.out.println("| ============================= |");
     }
 }
