@@ -11,7 +11,7 @@ public class ClubeView {
 
     Scanner sc = new Scanner(System.in);
 
-    public ClubeRequestDTO criarClube(ClubeRequestDTO clubeRequestDTO){
+    public ClubeRequestDTO criarClube(){
         System.out.println("\n| ====== CRIAR CLUBE ====== |");
         String nome = InputHelper.inputString("| Insira o nome do clube: ", sc);
         int anoFundacao = InputHelper.inputInteger("| Insira o ano de fundação do clube("+ nome +"): ", sc);

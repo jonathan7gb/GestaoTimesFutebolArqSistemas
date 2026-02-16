@@ -1,6 +1,7 @@
 package br.com.weg.presentation.controller;
 
 
+import br.com.weg.application.dto.Clube.ClubeRequestDTO;
 import br.com.weg.application.service.ClubeService;
 import br.com.weg.application.service.PartidaService;
 import br.com.weg.application.service.UsuarioService;
@@ -34,7 +35,6 @@ public class MainController {
                 int escolhaJogador = usuarioView.jogadorMenu();
                 System.out.println();
 
-
             }
             case 2 -> {
                 int escolhaComissao = usuarioView.comissaoMenu();
@@ -47,6 +47,12 @@ public class MainController {
             case 4 -> {
                 int escolhaAdmin = adminView.adminMenu();
                 System.out.println();
+                switch (escolhaAdmin){
+                    case 1 -> {
+                       ClubeRequestDTO clubeRequestDTO =  clubeView.criarClube();
+                       clubeService.criarClube(clubeRequestDTO);
+                    }
+                }
             }
             case 0 -> {
                 return;
