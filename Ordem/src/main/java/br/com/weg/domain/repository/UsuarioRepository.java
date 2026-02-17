@@ -18,7 +18,7 @@ public interface UsuarioRepository {
 
     List<Usuario> listarPresidente() throws SQLException;
 
-    Usuario listarJogadorPorId(int id) throws SQLException;
+    Usuario buscarJogadorPorId(int id) throws SQLException;
 
     List<Usuario> listarJogadorPorClube (int clubeId) throws SQLException;
 }

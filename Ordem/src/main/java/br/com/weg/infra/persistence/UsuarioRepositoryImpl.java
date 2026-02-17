@@ -196,7 +196,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     }
 
     @Override
-    public Usuario listarJogadorPorId(int id) throws SQLException {
+    public Usuario buscarJogadorPorId(int id) throws SQLException {
 
         String sql = """
                 SELECT 
@@ -234,41 +234,33 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     public List<Usuario> listarJogadorPorClube(int clubeId) throws SQLException {
         List<Usuario> jogadores = new ArrayList<>();
 
-//        String sql =  """
-//                SELECT u.id, u.nome, u.peso, u.altura, u.tipo, u.id_clube, c.nome AS nome_clube
-//                FROM usuario u
-//                JOIN clube c ON u.id_clube = c.id
-//                WHERE u.id_clube = ? AND u.tipo = 'Jogador'
-//                """;
-//
-//        try(Connection conn = Conexao.conectar();
-//        PreparedStatement ps = conn.prepareStatement(sql)){
-//
-//            ps.setInt(1, clubeId);
-//
-//            ResultSet rs = ps.executeQuery();
-//
-//            while (rs.next()){
-//                String nomeClube = rs.getString("nome_clube");
-//                String nomeJogador = rs.getString("nome");
-//
-//                Usuario jogador = new Usuario(
-//                (rs.getLong("id"));
-//                jogador.setNome(nomeJogador);
-//                jogador.setPeso(rs.getBigDecimal("peso"));
-//                jogador.setAltura(rs.getInt("altura"));
-//                jogador.setTipo(UserType.valueOf(rs.getString("tipo")));
-//                jogador.setIdClube(rs.getLong("id_clube"));
-//
-//                );
-//                jogadores.add(jogador);
-//            }
-//        }
-//            return jogadores;
-//            }
-//
-//}
+        String sql =  """
+                SELECT u.id, u.nome, u.peso, u.altura, c.nome AS nome_clube
+                FROM usuario u
+                JOIN clube c ON u.id_clube = c.id
+                WHERE u.id_clube = ? AND u.tipo = 'Jogador'
+                """;
+
+        try(Connection conn = Conexao.conectar();
+        PreparedStatement ps = conn.prepareStatement(sql)){
+
+            ps.setInt(1, clubeId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()){
+                Usuario jogador = new Usuario(
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getDouble("peso"),
+                        rs.getInt("altura"),
+                        rs.getInt("id_clube")
+                );
+
+                jogadores.add(jogador);
+                return jogadores;
+            }
+        }
         return null;
     }
-
 }
