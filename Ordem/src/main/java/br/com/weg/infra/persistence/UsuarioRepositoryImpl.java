@@ -95,7 +95,6 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                 nome,
                 peso, 
                 altura,
-                tipo,
                 id_clube
                 FROM 
                 usuario
@@ -112,7 +111,6 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                         rs.getString("nome"),
                         rs.getDouble("peso"),
                         rs.getInt("altura"),
-                        (TipoUsuario) rs.getObject("tipo"),
                         rs.getInt("id_clube")
                 );
                 usuarios.add(usuario);
@@ -134,7 +132,6 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                 nome,
                 peso, 
                 altura,
-                tipo,
                 id_clube
                 FROM 
                 usuario
@@ -151,7 +148,6 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                         rs.getString("nome"),
                         rs.getDouble("peso"),
                         rs.getInt("altura"),
-                        (TipoUsuario) rs.getObject("tipo"),
                         rs.getInt("id_clube")
                 );
                 usuarios.add(usuario);
@@ -173,7 +169,6 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                 nome,
                 peso, 
                 altura,
-                tipo,
                 id_clube
                 FROM 
                 usuario
@@ -190,7 +185,6 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                         rs.getString("nome"),
                         rs.getDouble("peso"),
                         rs.getInt("altura"),
-                        (TipoUsuario) rs.getObject("tipo"),
                         rs.getInt("id_clube")
                 );
                 usuarios.add(usuario);
@@ -199,6 +193,82 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 
             return List.of();
         }
+    }
+
+    @Override
+    public Usuario listarJogadorPorId(int id) throws SQLException {
+
+        String sql = """
+                SELECT 
+                id,
+                nome,
+                peso,
+                altura,
+                id_clube
+                FROM usuario
+                WHERE id = ? AND tipo = 'JOGADOR'
+                """;
+
+        try(Connection conn = Conexao.conectar();
+        PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()){
+                Usuario usuario = new Usuario(
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getDouble("peso"),
+                        rs.getInt("altura"),
+                        rs.getInt("id_clube")
+                );
+                return usuario;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public List<Usuario> listarJogadorPorClube(int clubeId) throws SQLException {
+        List<Usuario> jogadores = new ArrayList<>();
+
+//        String sql =  """
+//                SELECT u.id, u.nome, u.peso, u.altura, u.tipo, u.id_clube, c.nome AS nome_clube
+//                FROM usuario u
+//                JOIN clube c ON u.id_clube = c.id
+//                WHERE u.id_clube = ? AND u.tipo = 'Jogador'
+//                """;
+//
+//        try(Connection conn = Conexao.conectar();
+//        PreparedStatement ps = conn.prepareStatement(sql)){
+//
+//            ps.setInt(1, clubeId);
+//
+//            ResultSet rs = ps.executeQuery();
+//
+//            while (rs.next()){
+//                String nomeClube = rs.getString("nome_clube");
+//                String nomeJogador = rs.getString("nome");
+//
+//                Usuario jogador = new Usuario(
+//                (rs.getLong("id"));
+//                jogador.setNome(nomeJogador);
+//                jogador.setPeso(rs.getBigDecimal("peso"));
+//                jogador.setAltura(rs.getInt("altura"));
+//                jogador.setTipo(UserType.valueOf(rs.getString("tipo")));
+//                jogador.setIdClube(rs.getLong("id_clube"));
+//
+//                );
+//                jogadores.add(jogador);
+//            }
+//        }
+//            return jogadores;
+//            }
+//
+//}
+        return null;
     }
 
 }
