@@ -196,7 +196,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     }
 
     @Override
-    public Usuario listarJogadorPorId(int id) throws SQLException {
+    public Usuario buscarJogadorPorId(int id) throws SQLException {
 
         String sql = """
                 SELECT 
