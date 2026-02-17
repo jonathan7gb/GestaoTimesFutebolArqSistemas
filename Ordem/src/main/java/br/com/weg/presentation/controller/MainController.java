@@ -41,18 +41,42 @@ public class MainController {
                 System.out.println();
             }
             case 3 -> {
-                int escolhaPresidente = usuarioView.presidenteMenu();
-                System.out.println();
+                do{
+                    int escolhaPresidente = usuarioView.presidenteMenu();
+                    System.out.println();
+                    switch (escolhaPresidente){
+                        case 1 -> {}
+                        case 2 -> {}
+                        case 3 -> {}
+                        case 0 -> {
+                            return;
+                        }
+                    }
+                }while(true);
             }
             case 4 -> {
-                int escolhaAdmin = adminView.adminMenu();
-                System.out.println();
-                switch (escolhaAdmin){
-                    case 1 -> {
-                       ClubeRequestDTO clubeRequestDTO =  clubeView.criarClube();
-                       clubeService.criarClube(clubeRequestDTO);
+                do{
+                    int escolhaAdmin = adminView.adminMenu();
+                    System.out.println();
+                    switch (escolhaAdmin){
+                        case 1 -> {
+                           ClubeRequestDTO clubeRequestDTO =  clubeView.criarClube();
+                           clubeService.criarClube(clubeRequestDTO);
+                        }
+                        case 2 -> {
+                        }
+                        case 3 -> {}
+                        case 4 -> {
+                            clubeView.listarClubes(clubeService.mostrarClubes());
+                            System.out.println();
+                        }
+                        case 5 -> {}
+                        case 6 -> {}
+                        case 0 -> {
+                            return;
+                        }
                     }
-                }
+                }while(true);
             }
             case 0 -> {
                 return;
