@@ -24,4 +24,6 @@ public interface UsuarioRepository {
     List<Usuario> listarJogadorPorClube (int clubeId) throws SQLException;
 
     Map<Integer, String> listarIdENomeClubeUsuario() throws SQLException;
+
+    boolean verificarSeNomeJaExisteNoClube(String nome, int id_clube) throws SQLException;
 }

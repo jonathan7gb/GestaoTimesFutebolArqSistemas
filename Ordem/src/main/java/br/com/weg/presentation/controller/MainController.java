@@ -2,6 +2,7 @@ package br.com.weg.presentation.controller;
 
 
 import br.com.weg.application.dto.Clube.ClubeRequestDTO;
+import br.com.weg.application.dto.Partida.PartidaRequestDTO;
 import br.com.weg.application.dto.Usuario.UsuarioRequestDTO;
 import br.com.weg.application.service.ClubeService;
 import br.com.weg.application.service.PartidaService;
@@ -69,7 +70,10 @@ public class MainController {
                             UsuarioRequestDTO requestDTO = usuarioView.criarUsuario();
                             usuarioService.criarUsuario(requestDTO);
                         }
-                        case 3 -> {}
+                        case 3 -> {
+                            PartidaRequestDTO partidaRequestDTO = partidaView.criarPartida();
+                            partidaService.criarPartida(partidaRequestDTO);
+                        }
                         case 4 -> {
                             clubeView.listarClubes(clubeService.mostrarClubes());
                             System.out.println();
@@ -78,7 +82,10 @@ public class MainController {
                             usuarioView.listarUsuarios(usuarioService.listarUsuarios(), usuarioService.idsNomeClubeUsuario());
                             System.out.println();
                         }
-                        case 6 -> {}
+                        case 6 -> {
+                            partidaView.listarPartidas(partidaService.listarPartidas(), partidaService.retornarNomesClubesPartidas());
+                            System.out.println();
+                        }
                         case 0 -> {
                             return;
                         }

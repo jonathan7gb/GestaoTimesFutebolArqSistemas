@@ -286,4 +286,28 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
         }
         return listaIdENomeClube;
     }
+
+    @Override
+    public boolean verificarSeNomeJaExisteNoClube(String nome, int id_clube) throws SQLException{
+        String sql = """
+                SELECT nome
+                FROM usuario
+                WHERE nome = ?
+                AND id_clube = ?
+                """;
+
+        try(Connection conn = Conexao.conectar();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+
+            ps.setString(1, nome);
+            ps.setInt(2, id_clube);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()){
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

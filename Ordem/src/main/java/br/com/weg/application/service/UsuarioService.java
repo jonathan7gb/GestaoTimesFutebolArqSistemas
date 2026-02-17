@@ -22,7 +22,16 @@ public class UsuarioService {
     public UsuarioResponseDTO criarUsuario(UsuarioRequestDTO uReqDto){
         Usuario u = uMapper.toEntity(uReqDto);
         try{
-            u = uRepository.criarUsuario(u);
+            boolean nomeExiste = uRepository.verificarSeNomeJaExisteNoClube(u.getNome(), u.getIdClube());
+
+            if(nomeExiste){
+                MessageHelper.error("Usuário com nome já existente nesse clube!\n");
+                return null;
+            }else{
+                u = uRepository.criarUsuario(u);
+            }
+
+
         } catch (SQLException e) {
             e.printStackTrace();
             MessageHelper.error("Erro ao salvar usuário!\n");

@@ -6,7 +6,7 @@ import br.com.weg.domain.entity.Partida;
 
 public class PartidaMapper {
 
-    public PartidaResponseDTO partidaResponseDTO(Partida partida){
+    public PartidaResponseDTO toDto(Partida partida){
         return new PartidaResponseDTO(partida.getId(), partida.getIdClubeA(), partida.getIdClubeB(), partida.getDataHoraPartida(), partida.getLocalizacao());
     }
 
