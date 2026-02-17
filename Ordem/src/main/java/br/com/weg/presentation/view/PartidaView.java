@@ -10,13 +10,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class PartidaView {
 
     Scanner sc = new Scanner(System.in);
 
-    public PartidaRequestDTO criarPartida(PartidaRequestDTO partidaRequestDTO){
+    public PartidaRequestDTO criarPartida(){
         System.out.println("\n| ====== CRIAR PARTIDA ====== |");
         int clubeA = InputHelper.inputInteger("| Insira o id do 1º clube: ", sc);
         int clubeB = InputHelper.inputInteger("| Insira o id do 2º clube: ", sc);
@@ -33,16 +34,18 @@ public class PartidaView {
         return new PartidaRequestDTO(idClubeA, clubeB, dataHora, localizacao);
     }
 
-    public void listarPartidas(List<PartidaResponseDTO> dtoList , String nomeClubeA, String nomeClubeB){
+    public void listarPartidas(List<PartidaResponseDTO> dtoList , Map<Integer,String> nomesClubes){
         for(PartidaResponseDTO c : dtoList){
-            mostrarPartida(c, nomeClubeA, nomeClubeB);
+
+                mostrarPartida(c, nomesClubes.get(c.idClubeA()), nomesClubes.get(c.idClubeB()));
+
         }
     }
 
     public void mostrarPartida(PartidaResponseDTO partidaResponseDTO, String nomeClubeA, String nomeClubeB){
-        System.out.println("| ============================= |");
+        System.out.println("| ======================================= |");
         System.out.println("| " + nomeClubeA + " x " + nomeClubeB);
         System.out.println("| " + partidaResponseDTO.dataHoraPartida() + " | " + partidaResponseDTO.localizacao());
-        System.out.println("| ============================= |");
+        System.out.println("| ======================================= |");
     }
 }

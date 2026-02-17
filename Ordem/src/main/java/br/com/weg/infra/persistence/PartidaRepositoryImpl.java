@@ -9,7 +9,9 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PartidaRepositoryImpl implements PartidaRepository {
     @Override
@@ -67,8 +69,8 @@ public class PartidaRepositoryImpl implements PartidaRepository {
             while (rs.next()){
                 Partida partida = new Partida(
                         rs.getInt("id"),
-                        rs.getInt(" id_clube_a"),
-                        rs.getInt(" id_clube_b"),
+                        rs.getInt("id_clube_a"),
+                        rs.getInt("id_clube_b"),
                         rs.getObject("data_hora", LocalDate.class),
                         rs.getString("local")
                 );
@@ -92,7 +94,7 @@ public class PartidaRepositoryImpl implements PartidaRepository {
                 id_clube_b,
                 data_hora,
                 local
-                FROM partidas 
+                FROM partida
                 WHERE id_clube_a = ? OR id_clube_b = ?
                 """;
 
@@ -113,5 +115,31 @@ public class PartidaRepositoryImpl implements PartidaRepository {
             }
         }
         return partidas;
+    }
+
+    @Override
+    public Map<Integer, String> listarNomeClubes() throws SQLException {
+
+        Map<Integer, String> clubes = new HashMap<>();
+
+        String sql = """
+            SELECT id, nome
+            FROM clube
+            """;
+
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                clubes.put(
+                        rs.getInt("id"),
+                        rs.getString("nome")
+                );
+            }
+        }
+
+        return clubes;
     }
 }
