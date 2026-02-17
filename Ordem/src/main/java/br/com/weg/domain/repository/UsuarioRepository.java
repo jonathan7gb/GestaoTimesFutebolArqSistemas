@@ -10,7 +10,7 @@ public interface UsuarioRepository {
 
     Usuario criarUsuario (Usuario usuario) throws SQLException;
     List<Usuario> listarUsuarios() throws SQLException;
-    List<Usuario> listarJogador(TipoUsuario tipoUsuario) throws SQLException;
+    List<Usuario> listarJogador() throws SQLException;
     List<Usuario> listarComissaoTecnica() throws SQLException;
     List<Usuario> listarPresidente() throws SQLException;
 }
