@@ -7,7 +7,9 @@ import br.com.weg.infra.database.Conexao;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UsuarioRepositoryImpl implements UsuarioRepository {
 
@@ -22,7 +24,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                 altura,
                 tipo,
                 id_clube )
-                VALUES (?,?,?,?,?)
+                VALUES (?,?,?,?::tipo_usuario,?)
                 """;
 
         try (Connection conn = Conexao.conectar();
@@ -32,6 +34,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
             ps.setDouble(2, usuario.getPeso());
             ps.setInt(3, usuario.getAltura());
             ps.setString(4, usuario.getTipo().name());
+            ps.setInt(5, usuario.getIdClube());
             ps.executeUpdate();
 
             ResultSet rs = ps.getGeneratedKeys();
@@ -73,15 +76,13 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                         rs.getString("nome"),
                         rs.getDouble("peso"),
                         rs.getInt("altura"),
-                        (TipoUsuario) rs.getObject("tipo"),
+                        TipoUsuario.valueOf(rs.getString("tipo")),
                         rs.getInt("id_clube")
                 );
                 usuarios.add(usuario);
-                return usuarios;
             }
         }
-
-        return List.of();
+        return usuarios;
     }
 
     @Override
@@ -262,5 +263,27 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
             }
         }
         return null;
+    }
+
+    @Override
+    public Map<Integer, String> listarIdENomeClubeUsuario() throws SQLException{
+        Map<Integer, String> listaIdENomeClube = new HashMap<>();
+
+        String sql = """
+                SELECT u.id, c.nome
+                FROM usuario u
+                JOIN clube c ON u.id_clube = c.id
+                """;
+
+        try(Connection conn = Conexao.conectar();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()){
+               listaIdENomeClube.put(rs.getInt(1), rs.getString(2));
+            }
+        }
+        return listaIdENomeClube;
     }
 }

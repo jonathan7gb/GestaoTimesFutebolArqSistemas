@@ -5,6 +5,7 @@ import br.com.weg.domain.enums.TipoUsuario;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 public interface UsuarioRepository {
 
@@ -21,4 +22,6 @@ public interface UsuarioRepository {
     Usuario buscarJogadorPorId(int id) throws SQLException;
 
     List<Usuario> listarJogadorPorClube (int clubeId) throws SQLException;
+
+    Map<Integer, String> listarIdENomeClubeUsuario() throws SQLException;
 }

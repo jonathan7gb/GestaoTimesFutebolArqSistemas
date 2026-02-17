@@ -6,6 +6,8 @@ import br.com.weg.application.dto.Usuario.UsuarioResponseDTO;
 import br.com.weg.domain.enums.TipoUsuario;
 import br.com.weg.presentation.view.helpers.InputHelper;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class UsuarioView {
@@ -76,8 +78,15 @@ public class UsuarioView {
         System.out.println("| NOME: " + usuarioResponseDTO.nome());
         System.out.println("| PESO: " + usuarioResponseDTO.peso());
         System.out.println("| ALTURA: " + usuarioResponseDTO.altura());
-        System.out.println("| TIPO: " + usuarioResponseDTO.tipo());
+        System.out.println("| TIPO: " + usuarioResponseDTO.tipo().name());
         System.out.println("| CLUBE: " + nomeClube);
         System.out.println("| =========================== |");
+    }
+
+    public void listarUsuarios(List<UsuarioResponseDTO> usuarioResponseDTOS, Map<Integer, String> nomeClubes){
+        for(UsuarioResponseDTO u : usuarioResponseDTOS){
+            String nomeClube = nomeClubes.get(u.id());
+            mostrarUsuario(u, nomeClube);
+        }
     }
 }
