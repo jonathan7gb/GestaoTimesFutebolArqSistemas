@@ -25,8 +25,8 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                 VALUES (?,?,?,?,?)
                 """;
 
-        try(Connection conn = Conexao.conectar();
-            PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, usuario.getNome());
             ps.setDouble(2, usuario.getPeso());
@@ -36,7 +36,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 
             ResultSet rs = ps.getGeneratedKeys();
 
-            if (rs.next()){
+            if (rs.next()) {
                 int idGerado = rs.getInt(1);
                 usuario.setId(idGerado);
             }
@@ -62,12 +62,12 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                 usuario
                 """;
 
-        try(Connection conn = Conexao.conectar();
-        PreparedStatement ps = conn.prepareStatement(sql)){
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ResultSet rs = ps.executeQuery();
 
-            while (rs.next()){
+            while (rs.next()) {
                 Usuario usuario = new Usuario(
                         rs.getInt("id"),
                         rs.getString("nome"),
@@ -85,7 +85,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     }
 
     @Override
-    public List<Usuario> listarJogador(TipoUsuario tipoUsuario) throws SQLException {
+    public List<Usuario> listarJogador() throws SQLException {
 
         List<Usuario> usuarios = new ArrayList<>();
 
@@ -99,15 +99,14 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                 id_clube
                 FROM 
                 usuario
-                WHERE tipo = ?::user_type
+                WHERE tipo = 'JOGADOR'
                 """;
         try (Connection conn = Conexao.conectar();
-        PreparedStatement ps = conn.prepareStatement(sql)){
-            ps.setString(1, tipoUsuario.name());
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ResultSet rs = ps.executeQuery();
 
-            while (rs.next()){
+            while (rs.next()) {
                 Usuario usuario = new Usuario(
                         rs.getInt("id"),
                         rs.getString("nome"),
@@ -126,11 +125,80 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 
     @Override
     public List<Usuario> listarComissaoTecnica() throws SQLException {
-        return List.of();
+
+        List<Usuario> usuarios = new ArrayList<>();
+
+        String sql = """
+                SELECT 
+                id,
+                nome,
+                peso, 
+                altura,
+                tipo,
+                id_clube
+                FROM 
+                usuario
+                WHERE tipo = 'COMISSAOTECNICA'
+                """;
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Usuario usuario = new Usuario(
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getDouble("peso"),
+                        rs.getInt("altura"),
+                        (TipoUsuario) rs.getObject("tipo"),
+                        rs.getInt("id_clube")
+                );
+                usuarios.add(usuario);
+                return usuarios;
+            }
+
+            return List.of();
+        }
+
     }
 
     @Override
     public List<Usuario> listarPresidente() throws SQLException {
-        return List.of();
+        List<Usuario> usuarios = new ArrayList<>();
+
+        String sql = """
+                SELECT 
+                id,
+                nome,
+                peso, 
+                altura,
+                tipo,
+                id_clube
+                FROM 
+                usuario
+                WHERE tipo = 'PRESIDENTE'
+                """;
+        try (Connection conn = Conexao.conectar();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Usuario usuario = new Usuario(
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getDouble("peso"),
+                        rs.getInt("altura"),
+                        (TipoUsuario) rs.getObject("tipo"),
+                        rs.getInt("id_clube")
+                );
+                usuarios.add(usuario);
+                return usuarios;
+            }
+
+            return List.of();
+        }
     }
+
 }
