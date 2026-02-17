@@ -28,6 +28,14 @@ public class Usuario {
         this.idClube = idClube;
     }
 
+    public Usuario(int id, String nome, double peso, int altura, int idClube) {
+        this.id = id;
+        this.nome = nome;
+        this.peso = peso;
+        this.altura = altura;
+        this.idClube = idClube;
+    }
+
     public int getId() {
         return id;
     }
