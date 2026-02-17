@@ -7,7 +7,9 @@ import br.com.weg.infra.database.Conexao;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class UsuarioRepositoryImpl implements UsuarioRepository {
 
@@ -262,5 +264,27 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
             }
         }
         return null;
+    }
+
+    @Override
+    public Map<Integer, String> listarIdENomeClubeUsuario() throws SQLException{
+        Map<Integer, String> listaIdENomeClube = new HashMap<>();
+
+        String sql = """
+                SELECT u.id, c.nome
+                FROM usuario
+                JOIN clube c ON u.id_clube = c.id
+                """;
+
+        try(Connection conn = Conexao.conectar();
+            PreparedStatement ps = conn.prepareStatement(sql)){
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()){
+               listaIdENomeClube.put(rs.getInt(1), rs.getString(2));
+            }
+        }
+        return listaIdENomeClube;
     }
 }
