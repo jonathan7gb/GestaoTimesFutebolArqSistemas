@@ -27,6 +27,7 @@ public class ClubeService {
         }
 
         MessageHelper.success("Clube Cadastrado com Sucesso!\n");
+        assert clubeSalvo != null;
         return clubeMapper.toDto(clubeSalvo);
     }
 

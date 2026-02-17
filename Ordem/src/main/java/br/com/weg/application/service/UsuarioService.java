@@ -19,13 +19,17 @@ public class UsuarioService {
     UsuarioMapper uMapper = new UsuarioMapper();
     UsuarioRepository uRepository = new UsuarioRepositoryImpl();
 
-    public void criarUsuario(UsuarioRequestDTO uReqDto){
+    public UsuarioResponseDTO criarUsuario(UsuarioRequestDTO uReqDto){
         Usuario u = uMapper.toEntity(uReqDto);
         try{
             u = uRepository.criarUsuario(u);
         } catch (SQLException e) {
+            e.printStackTrace();
             MessageHelper.error("Erro ao salvar usuário!\n");
         }
+
+        MessageHelper.success("Usuário cadastrado com sucesso!\n");
+        return uMapper.toDto(u);
     }
 
     public List<UsuarioResponseDTO> listarUsuarios(){
@@ -43,6 +47,7 @@ public class UsuarioService {
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             MessageHelper.error("Erro ao listar os usuários");
         }
         return dtoList;
@@ -53,6 +58,7 @@ public class UsuarioService {
         try{
             idsNomeClubeUsuario = uRepository.listarIdENomeClubeUsuario();
         } catch (SQLException e) {
+            e.printStackTrace();
             MessageHelper.error("Erro ao listar os usuários");
         }
         return idsNomeClubeUsuario;

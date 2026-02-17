@@ -24,7 +24,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                 altura,
                 tipo,
                 id_clube )
-                VALUES (?,?,?,?,?)
+                VALUES (?,?,?,?::tipo_usuario,?)
                 """;
 
         try (Connection conn = Conexao.conectar();
@@ -34,6 +34,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
             ps.setDouble(2, usuario.getPeso());
             ps.setInt(3, usuario.getAltura());
             ps.setString(4, usuario.getTipo().name());
+            ps.setInt(5, usuario.getIdClube());
             ps.executeUpdate();
 
             ResultSet rs = ps.getGeneratedKeys();
@@ -75,15 +76,13 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                         rs.getString("nome"),
                         rs.getDouble("peso"),
                         rs.getInt("altura"),
-                        (TipoUsuario) rs.getObject("tipo"),
+                        TipoUsuario.valueOf(rs.getString("tipo")),
                         rs.getInt("id_clube")
                 );
                 usuarios.add(usuario);
-                return usuarios;
             }
         }
-
-        return List.of();
+        return usuarios;
     }
 
     @Override
@@ -272,7 +271,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 
         String sql = """
                 SELECT u.id, c.nome
-                FROM usuario
+                FROM usuario u
                 JOIN clube c ON u.id_clube = c.id
                 """;
 
