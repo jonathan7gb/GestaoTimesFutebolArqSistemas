@@ -63,9 +63,13 @@ public class MainController {
                            ClubeRequestDTO clubeRequestDTO =  clubeView.criarClube();
                            clubeService.criarClube(clubeRequestDTO);
                         }
-                        case 2 -> {}
+                        case 2 -> {
+                        }
                         case 3 -> {}
-                        case 4 -> {}
+                        case 4 -> {
+                            clubeView.listarClubes(clubeService.mostrarClubes());
+                            System.out.println();
+                        }
                         case 5 -> {}
                         case 6 -> {}
                         case 0 -> {
