@@ -39,7 +39,7 @@ public class UsuarioView {
     public int presidenteMenu(){
         System.out.println("""
                 | ====== MENU PRESIDENTE ====== |
-                | 1 - ADICIONAR JOGADORES       |
+                | 1 - ADICIONAR FUNCIONARIOS    |
                 | 2 - MARCAR PARTIDA            |
                 | 3 - LISTAR JOGADORES          |
                 | 4 - LISTAR PARTIDAS           |
@@ -88,5 +88,26 @@ public class UsuarioView {
             String nomeClube = nomeClubes.get(u.id());
             mostrarUsuario(u, nomeClube);
         }
+    }
+
+    public UsuarioRequestDTO criarUsuarioPresidente(){
+        TipoUsuario tipoUsuario = null;
+        System.out.println("| ==== CRIAR USUÁRIO ==== |");
+        String nome = InputHelper.inputString("| Nome: ", sc);
+        double peso = InputHelper.inputDouble("| Peso: ", sc);
+        int altura = InputHelper.inputInteger("| Altura (cm): ", sc);
+        int tipo = InputHelper.inputInteger("""
+                | Tipo de Usuário
+                | 1 - JOGADOR
+                | 2 - COMISSÃO TÉCNICA
+                | Insira o tipo do usuário: """, sc);
+
+        try {
+            tipoUsuario = TipoUsuario.values()[tipo - 1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new RuntimeException("Escolha inválida");
+        }
+        int idClube = InputHelper.inputInteger("| Id do clube: ", sc);
+        return  new UsuarioRequestDTO(nome, peso, altura, tipoUsuario, idClube);
     }
 }
