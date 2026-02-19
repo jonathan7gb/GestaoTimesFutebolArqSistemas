@@ -4,6 +4,7 @@ package br.com.weg.presentation.controller;
 import br.com.weg.application.dto.Clube.ClubeRequestDTO;
 import br.com.weg.application.dto.Partida.PartidaRequestDTO;
 import br.com.weg.application.dto.Usuario.UsuarioRequestDTO;
+import br.com.weg.application.dto.Usuario.UsuarioResponseDTO;
 import br.com.weg.application.service.ClubeService;
 import br.com.weg.application.service.PartidaService;
 import br.com.weg.application.service.UsuarioService;
@@ -12,6 +13,8 @@ import br.com.weg.presentation.view.ClubeView;
 import br.com.weg.presentation.view.PartidaView;
 import br.com.weg.presentation.view.UsuarioView;
 import br.com.weg.presentation.view.helpers.MessageHelper;
+
+import java.util.List;
 
 public class MainController {
 
@@ -48,9 +51,19 @@ public class MainController {
                     int escolhaPresidente = usuarioView.presidenteMenu();
                     System.out.println();
                     switch (escolhaPresidente){
-                        case 1 -> {}
-                        case 2 -> {}
-                        case 3 -> {}
+                        case 1 -> {
+                            UsuarioRequestDTO usuarioRequestDTO = usuarioView.criarUsuarioPresidente();
+                            usuarioService.criarUsuario(usuarioRequestDTO);
+                        }
+                        case 2 -> {
+                            PartidaRequestDTO partidaRequestDTO = partidaView.criarPartida();
+                            partidaService.criarPartida(partidaRequestDTO);
+                        }
+                        case 3 -> {
+                            int idClube = clubeView.pedirIdClube();
+                            List<UsuarioResponseDTO>listarUsuariosPorClube = usuarioService.listarUsuariosDeUmClube(idClube);
+                            usuarioView.listarUsuarios(listarUsuariosPorClube,  usuarioService.idsNomeClubeUsuario());
+                        }
                         case 0 -> {
                             return;
                         }
