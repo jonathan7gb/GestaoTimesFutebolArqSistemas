@@ -239,7 +239,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                 SELECT u.id, u.nome, u.peso, u.altura, c.nome AS nome_clube
                 FROM usuario u
                 JOIN clube c ON u.id_clube = c.id
-                WHERE u.id_clube = ? AND u.tipo = 'Jogador'
+                WHERE u.id_clube = ? AND u.tipo = 'JOGADOR'
                 """;
 
         try(Connection conn = Conexao.conectar();
