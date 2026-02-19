@@ -33,4 +33,10 @@ public class ClubeView {
         System.out.println("| PAÍS: " + clubeResponseDTO.pais());
         System.out.println("| =========================== |");
     }
+
+    public int pedirIdClube(){
+        System.out.println("| ======================= |");
+        int idClube = InputHelper.inputInteger("| Digite o ID do Clube: ", sc);
+        return idClube;
+    }
 }
