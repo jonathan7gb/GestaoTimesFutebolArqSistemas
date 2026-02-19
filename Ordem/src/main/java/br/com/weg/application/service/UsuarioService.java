@@ -72,4 +72,25 @@ public class UsuarioService {
         }
         return idsNomeClubeUsuario;
     }
+
+    public List<UsuarioResponseDTO>listarUsuariosDeUmClube(int id){
+        List<UsuarioResponseDTO>usuarioResponseDTO = new ArrayList<>();
+        try{
+            List<Usuario> usuarioList = uRepository.listarJogadorPorClube(id);
+
+            if(usuarioList.isEmpty()){
+                MessageHelper.error("Nenhum usuário encontrado!");
+            }else{
+
+                for(Usuario u: usuarioList){
+                    usuarioResponseDTO.add(uMapper.toDto(u));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            MessageHelper.error("Erro ao listar os usuários");
+        }
+
+        return usuarioResponseDTO;
+    }
 }
