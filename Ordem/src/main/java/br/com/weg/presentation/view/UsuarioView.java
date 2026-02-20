@@ -16,6 +16,7 @@ public class UsuarioView {
 
     public int jogadorMenu(){
         System.out.println("""
+                
                 | ====== MENU JOGADOR ====== |
                 | 1 - LISTAR COMPANHEIROS    |
                 | 2 - LISTAR PARTIDAS        |
@@ -27,6 +28,7 @@ public class UsuarioView {
 
     public int comissaoMenu(){
         System.out.println("""
+                
                 | ====== MENU COMISSÃO TÉCNICA ====== |
                 | 1 - LISTAR JOGADORES                |
                 | 2 - LISTAR PARTIDAS                 |
@@ -38,6 +40,7 @@ public class UsuarioView {
 
     public int presidenteMenu(){
         System.out.println("""
+                
                 | ====== MENU PRESIDENTE ====== |
                 | 1 - ADICIONAR FUNCIONARIOS    |
                 | 2 - MARCAR PARTIDA            |
@@ -78,7 +81,7 @@ public class UsuarioView {
         System.out.println("| NOME: " + usuarioResponseDTO.nome());
         System.out.println("| PESO: " + usuarioResponseDTO.peso());
         System.out.println("| ALTURA: " + usuarioResponseDTO.altura());
-        System.out.println("| TIPO: " + usuarioResponseDTO.tipo().name());
+        System.out.println("| TIPO: " + (usuarioResponseDTO.tipo() != null ? usuarioResponseDTO.tipo().name() : "N/A"));
         System.out.println("| CLUBE: " + nomeClube);
         System.out.println("| =========================== |");
     }
