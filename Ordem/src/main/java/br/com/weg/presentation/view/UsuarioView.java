@@ -21,7 +21,8 @@ public class UsuarioView {
                 | 1 - LISTAR COMPANHEIROS    |
                 | 2 - LISTAR PARTIDAS        |
                 | ========================== |
-                | 0 - SAIR DO SISTEMA        |
+                | 0 - VOLTAR AO MENU         |
+                |     PRINCIPAL DO SISTEMA   |
                 | ========================== |""");
         return InputHelper.inputInteger("| ? - SUA ESCOLHA: ", sc);
     }
@@ -33,7 +34,8 @@ public class UsuarioView {
                 | 1 - LISTAR JOGADORES                |
                 | 2 - LISTAR PARTIDAS                 |
                 | =================================== |
-                | 0 - SAIR DO SISTEMA                 |
+                | 0 - VOLTAR AO MENU                  |
+                |     PRINCIPAL DO SISTEMA            |
                 | =================================== |""") ;
         return InputHelper.inputInteger("| ? - SUA ESCOLHA: ", sc);
     }
@@ -47,7 +49,8 @@ public class UsuarioView {
                 | 3 - LISTAR JOGADORES          |
                 | 4 - LISTAR PARTIDAS           |
                 | ============================= |
-                | 0 - SAIR DO SISTEMA           |
+                | 0 - VOLTAR AO MENU            |
+                |     PRINCIPAL DO SISTEMA      |
                 | ============================= |""") ;
         return InputHelper.inputInteger("| ? - SUA ESCOLHA: ", sc);
     }
