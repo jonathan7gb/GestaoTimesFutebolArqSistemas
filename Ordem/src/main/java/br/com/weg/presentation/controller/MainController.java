@@ -33,124 +33,92 @@ public class MainController {
         this.usuarioService = usuarioService;
     }
 
-    public void startSystem(){
-        int escolhaPrincipal = adminView.menuPrincipal();
-        System.out.println();
+    public void startSystem() {
+        while (true) {
+            int escolhaPrincipal = adminView.menuPrincipal();
+            System.out.println();
 
-        switch (escolhaPrincipal){
-            case 1 -> {
-                do {
-                    int escolhaJogador = usuarioView.jogadorMenu();
-                    System.out.println();
+            switch (escolhaPrincipal) {
+                case 1 -> menuJogador();
+                case 2 -> menuComissao();
+                case 3 -> menuPresidente();
+                case 4 -> menuAdmin();
+                case 0 -> {
+                    return;
+                }
+                default -> MessageHelper.error("Escolha inválida");
+            }
+        }
+    }
 
-                    switch (escolhaJogador) {
-                        case 1 -> {
-                            int idClube = clubeView.pedirIdClube();
-                            List<UsuarioResponseDTO> listarJogadoresPorClube = usuarioService.listarUsuariosDeUmClube(idClube);
-                            usuarioView.listarUsuarios(listarJogadoresPorClube, usuarioService.idsNomeClubeUsuario());
-                        }
-                        case 2 -> {
-                            int idClube = clubeView.pedirIdClube();
-                            List<PartidaResponseDTO> listarPartidasPorClube = partidaService.listarPartidas();
-                            partidaView.listarPartidas(listarPartidasPorClube, partidaService.retornarNomesClubesPartidas());
-                        }
-                        case 0 -> {
-                            return;
-                        }
-                    }
-                }while (true);
-            }
-            case 2 -> {
-                do {
-                    int escolhaComissao = usuarioView.comissaoMenu();
-                    System.out.println();
+    private void menuJogador() {
+        while (true) {
+            int escolha = usuarioView.jogadorMenu();
+            if (escolha == 0) break;
 
-                    switch (escolhaComissao){
-                        case 1 -> {
-                            int idClube = clubeView.pedirIdClube();
-                            List<UsuarioResponseDTO> listarJogadoresPorClube = usuarioService.listarUsuariosDeUmClube(idClube);
-                            usuarioView.listarUsuarios(listarJogadoresPorClube,  usuarioService.idsNomeClubeUsuario());
-                        }
-                        case 2 -> {
-                            int idClube = clubeView.pedirIdClube();
-                            List<PartidaResponseDTO> listarPartidasPorClube = partidaService.listarPartidas();
-                            partidaView.listarPartidas(listarPartidasPorClube, partidaService.retornarNomesClubesPartidas());
-                        }
-                        case 0 -> {
-                            return;
-                        }
-                    }
-                }while (true);
+            switch (escolha) {
+                case 1 -> {
+                    int idClube = clubeView.pedirIdClube();
+                    usuarioView.listarUsuarios(usuarioService.listarUsuariosDeUmClube(idClube), usuarioService.idsNomeClubeUsuario());
+                }
+                case 2 -> {
+                    int idClube = clubeView.pedirIdClube();
+                    partidaView.listarPartidas(partidaService.listarPartidas(), partidaService.retornarNomesClubesPartidas());
+                }
             }
-            case 3 -> {
-                do{
-                    int escolhaPresidente = usuarioView.presidenteMenu();
-                    System.out.println();
-                    switch (escolhaPresidente){
-                        case 1 -> {
-                            UsuarioRequestDTO usuarioRequestDTO = usuarioView.criarUsuarioPresidente();
-                            usuarioService.criarUsuario(usuarioRequestDTO);
-                        }
-                        case 2 -> {
-                            PartidaRequestDTO partidaRequestDTO = partidaView.criarPartida();
-                            partidaService.criarPartida(partidaRequestDTO);
-                        }
-                        case 3 -> {
-                            int idClube = clubeView.pedirIdClube();
-                            List<UsuarioResponseDTO>listarUsuariosPorClube = usuarioService.listarUsuariosDeUmClube(idClube);
-                            usuarioView.listarUsuarios(listarUsuariosPorClube,  usuarioService.idsNomeClubeUsuario());
-                        }
-                        case 4 -> {
-                            int idClube = clubeView.pedirIdClube();
-                            List<PartidaResponseDTO> listarPartidasPorClube = partidaService.listarPartidas();
-                            partidaView.listarPartidas(listarPartidasPorClube, partidaService.retornarNomesClubesPartidas());
-                        }
-                        case 0 -> {
-                            return;
-                        }
-                    }
-                }while(true);
+        }
+    }
+
+    private void menuComissao() {
+        while (true) {
+            int escolha = usuarioView.comissaoMenu();
+            if (escolha == 0) break;
+
+            switch (escolha) {
+                case 1 -> {
+                    int idClube = clubeView.pedirIdClube();
+                    usuarioView.listarUsuarios(usuarioService.listarUsuariosDeUmClube(idClube), usuarioService.idsNomeClubeUsuario());
+                }
+                case 2 -> {
+                    int idClube = clubeView.pedirIdClube();
+                    partidaView.listarPartidas(partidaService.listarPartidas(), partidaService.retornarNomesClubesPartidas());
+                }
             }
-            case 4 -> {
-                do{
-                    int escolhaAdmin = adminView.adminMenu();
-                    System.out.println();
-                    switch (escolhaAdmin){
-                        case 1 -> {
-                           ClubeRequestDTO clubeRequestDTO =  clubeView.criarClube();
-                           clubeService.criarClube(clubeRequestDTO);
-                        }
-                        case 2 -> {
-                            UsuarioRequestDTO requestDTO = usuarioView.criarUsuario();
-                            usuarioService.criarUsuario(requestDTO);
-                        }
-                        case 3 -> {
-                            PartidaRequestDTO partidaRequestDTO = partidaView.criarPartida();
-                            partidaService.criarPartida(partidaRequestDTO);
-                        }
-                        case 4 -> {
-                            clubeView.listarClubes(clubeService.mostrarClubes());
-                            System.out.println();
-                        }
-                        case 5 -> {
-                            usuarioView.listarUsuarios(usuarioService.listarUsuarios(), usuarioService.idsNomeClubeUsuario());
-                            System.out.println();
-                        }
-                        case 6 -> {
-                            partidaView.listarPartidas(partidaService.listarPartidas(), partidaService.retornarNomesClubesPartidas());
-                            System.out.println();
-                        }
-                        case 0 -> {
-                            return;
-                        }
-                    }
-                }while(true);
+        }
+    }
+
+    private void menuPresidente() {
+        while (true) {
+            int escolha = usuarioView.presidenteMenu();
+            if (escolha == 0) break;
+
+            switch (escolha) {
+                case 1 -> usuarioService.criarUsuario(usuarioView.criarUsuarioPresidente());
+                case 2 -> partidaService.criarPartida(partidaView.criarPartida());
+                case 3 -> {
+                    int idClube = clubeView.pedirIdClube();
+                    usuarioView.listarUsuarios(usuarioService.listarUsuariosDeUmClube(idClube), usuarioService.idsNomeClubeUsuario());
+                }
+                case 4 -> {
+                    int idClube = clubeView.pedirIdClube();
+                    partidaView.listarPartidas(partidaService.listarPartidas(), partidaService.retornarNomesClubesPartidas());
+                }
             }
-            case 0 -> {
-                return;
-            }
-            default -> {
-                MessageHelper.error("Escolha inválida");
+        }
+    }
+
+    private void menuAdmin() {
+        while (true) {
+            int escolha = adminView.adminMenu();
+            if (escolha == 0) break;
+
+            switch (escolha) {
+                case 1 -> clubeService.criarClube(clubeView.criarClube());
+                case 2 -> usuarioService.criarUsuario(usuarioView.criarUsuario());
+                case 3 -> partidaService.criarPartida(partidaView.criarPartida());
+                case 4 -> clubeView.listarClubes(clubeService.mostrarClubes());
+                case 5 -> usuarioView.listarUsuarios(usuarioService.listarUsuarios(), usuarioService.idsNomeClubeUsuario());
+                case 6 -> partidaView.listarPartidas(partidaService.listarPartidas(), partidaService.retornarNomesClubesPartidas());
             }
         }
     }
