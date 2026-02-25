@@ -59,6 +59,17 @@ public class PartidaService {
         return dtoList;
     }
 
+    public List<PartidaResponseDTO> listarPartidasPorClube(int idClube){
+        try{
+           return partidaRepository.buscarPartidaPorClube(idClube)
+                    .stream()
+                    .map(partidaMapper::toDto)
+                    .toList();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public Map<Integer, String> retornarNomesClubesPartidas(){
         Map<Integer, String> NomesClube = new HashMap<>();
         try{

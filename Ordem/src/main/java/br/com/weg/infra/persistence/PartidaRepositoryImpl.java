@@ -101,13 +101,16 @@ public class PartidaRepositoryImpl implements PartidaRepository {
         try (Connection conn = Conexao.conectar();
         PreparedStatement ps = conn.prepareStatement(sql)){
 
+            ps.setInt(1, clubeId);
+            ps.setInt(2, clubeId);
+
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()){
                 Partida partida = new Partida(
                         rs.getInt("id"),
-                        rs.getInt(" id_clube_a"),
-                        rs.getInt(" id_clube_b"),
+                        rs.getInt("id_clube_a"),
+                        rs.getInt("id_clube_b"),
                         rs.getObject("data_hora", LocalDate.class),
                         rs.getString("local")
                 );
