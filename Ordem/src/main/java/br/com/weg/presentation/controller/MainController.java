@@ -63,7 +63,7 @@ public class MainController {
                 }
                 case 2 -> {
                     int idClube = clubeView.pedirIdClube();
-                    partidaView.listarPartidas(partidaService.listarPartidas(), partidaService.retornarNomesClubesPartidas());
+                    partidaView.listarPartidas(partidaService.listarPartidasPorClube(idClube), partidaService.retornarNomesClubesPartidas());
                 }
             }
         }
@@ -81,7 +81,7 @@ public class MainController {
                 }
                 case 2 -> {
                     int idClube = clubeView.pedirIdClube();
-                    partidaView.listarPartidas(partidaService.listarPartidas(), partidaService.retornarNomesClubesPartidas());
+                    partidaView.listarPartidas(partidaService.listarPartidasPorClube(idClube), partidaService.retornarNomesClubesPartidas());
                 }
             }
         }
@@ -101,7 +101,7 @@ public class MainController {
                 }
                 case 4 -> {
                     int idClube = clubeView.pedirIdClube();
-                    partidaView.listarPartidas(partidaService.listarPartidas(), partidaService.retornarNomesClubesPartidas());
+                    partidaView.listarPartidas(partidaService.listarPartidasPorClube(idClube), partidaService.retornarNomesClubesPartidas());
                 }
             }
         }
