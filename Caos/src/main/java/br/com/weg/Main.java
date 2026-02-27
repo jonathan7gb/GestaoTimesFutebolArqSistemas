@@ -5,8 +5,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.util.Scanner;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) throws Exception {
         // VIOLAÇÃO DE DIP: Dependência direta de Scanner e Conexão Hardcoded
@@ -27,7 +25,6 @@ public class Main {
                 System.out.print("Nome do Time: "); c.nome = s.next(); // Atributo público!
                 System.out.print("País: "); c.pais = s.next();
 
-                // Lógica de banco misturada com a UI - Risco imenso de SQL Injection
                 Connection conn = DriverManager.getConnection(url, user, pass);
                 String sql = "INSERT INTO clube (nome, pais) VALUES ('" + c.nome + "', '" + c.pais + "')";
                 PreparedStatement ps = conn.prepareStatement(sql);
@@ -40,7 +37,7 @@ public class Main {
                 System.out.print("Peso: "); u.peso = s.nextDouble();
                 System.out.print("Tipo (JOGADOR/PRESIDENTE): "); u.tipo = s.next();
 
-                // VIOLAÇÃO DE OCP: Lógica de negócio chumbada em ifs infinitos
+                // VIOLAÇÃO DE OCP: Lógica de negócio em ifs infinitos
                 if (u.tipo.equals("JOGADOR")) {
                     if (u.peso > 120) {
                         System.out.println("JOGADOR FORA DE FORMA! Aplicando multa de R$ 500 no banco agora...");
@@ -49,7 +46,6 @@ public class Main {
                     }
                 }
 
-                // Salva direto aqui também... duplicando código de conexão (Violando DRY)
                 Connection conn = DriverManager.getConnection(url, user, pass);
                 PreparedStatement ps = conn.prepareStatement("INSERT INTO usuario (nome, tipo) VALUES ('" + u.nome + "', '" + u.tipo + "')");
                 conn.close();
@@ -60,12 +56,11 @@ public class Main {
                 int t = s.nextInt();
                 double bonus = 0;
 
-                // Isso cresce a cada novo cargo. Se esquecer um break, o sistema quebra.
                 switch (t) {
-                    case 1: bonus = 1000 * 2; break; // Bônus fixo bizarro
+                    case 1: bonus = 1000 * 2; break;
                     case 2: bonus = 500 + 100; break;
                     case 3: bonus = 5000 / 2; break;
-                    default: bonus = 1; // "Gambi" para não ser zero
+                    default: bonus = 1;
                 }
                 System.out.println("Bônus calculado no 'olhômetro': " + bonus);
 
@@ -73,7 +68,6 @@ public class Main {
                 // VIOLAÇÃO DE LSP: Vamos tentar fazer o Presidente jogar.
                 System.out.println("Iniciando partida... Chamando o Presidente para bater o pênalti!");
 
-                // Criando uma subclasse anônima bizarra que quebra o contrato
                 MembroFutebol pres = new MembroFutebol() {
                     public void jogar() { throw new RuntimeException("ERRO FATAL: Presidente infartou tentando correr!"); }
                     public void treinar() { System.out.println("Presidente olhando o treino de terno."); }
@@ -82,7 +76,6 @@ public class Main {
                     public void cobrarEscanteio() { throw new RuntimeException("Erro: Sapato social não chuta bola!"); }
                 };
 
-                // O código compila, mas explode em runtime. Isso é o pesadelo do Liskov.
                 pres.jogar();
 
             } else if (op.equals("0")) {
