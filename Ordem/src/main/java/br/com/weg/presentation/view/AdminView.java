@@ -32,7 +32,8 @@ public class AdminView {
                 | 5 - LISTAR USUARIOS      |
                 | 6 - LISTAR PARTIDAS      |
                 | ======================== |
-                | 0 - SAIR DO SISTEMA      |
+                | 0 - VOLTAR AO MENU       |
+                |     PRINCIPAL DO SISTEMA |
                 | ======================== |""");
         return InputHelper.inputInteger("| ? - SUA ESCOLHA: ", sc);
     }

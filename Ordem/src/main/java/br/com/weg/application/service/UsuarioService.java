@@ -4,9 +4,11 @@ import br.com.weg.application.dto.Usuario.UsuarioRequestDTO;
 import br.com.weg.application.dto.Usuario.UsuarioResponseDTO;
 import br.com.weg.application.mapper.UsuarioMapper;
 import br.com.weg.domain.entity.Usuario;
+import br.com.weg.domain.notification.INotificacao;
 import br.com.weg.domain.repository.UsuarioRepository;
+import br.com.weg.domain.service.IUsuarioService;
+import br.com.weg.infra.notification.ConsoleNotificacao;
 import br.com.weg.infra.persistence.UsuarioRepositoryImpl;
-import br.com.weg.presentation.view.helpers.MessageHelper;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,62 +16,98 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UsuarioService {
+public class UsuarioService implements IUsuarioService {
 
-    UsuarioMapper uMapper = new UsuarioMapper();
-    UsuarioRepository uRepository = new UsuarioRepositoryImpl();
+    private final UsuarioMapper uMapper = new UsuarioMapper();
+    private final UsuarioRepository uRepository;
+    private INotificacao notificacao;
 
-    public UsuarioResponseDTO criarUsuario(UsuarioRequestDTO uReqDto){
+    public UsuarioService() {
+        this.uRepository = new UsuarioRepositoryImpl();
+        this.notificacao = new ConsoleNotificacao();
+    }
+
+    public UsuarioService(UsuarioRepository uRepository, INotificacao notificacao) {
+        this.uRepository = uRepository;
+        this.notificacao = notificacao;
+    }
+
+    public void setNotificacao(INotificacao notificacao) {
+        this.notificacao = notificacao;
+    }
+
+    @Override
+    public UsuarioResponseDTO criarUsuario(UsuarioRequestDTO uReqDto) {
         Usuario u = uMapper.toEntity(uReqDto);
-        try{
+        try {
             boolean nomeExiste = uRepository.verificarSeNomeJaExisteNoClube(u.getNome(), u.getIdClube());
 
-            if(nomeExiste){
-                MessageHelper.error("Usuário com nome já existente nesse clube!\n");
+            if (nomeExiste) {
+                notificacao.erro("Usuário com nome já existente nesse clube!\n");
                 return null;
-            }else{
+            } else {
                 u = uRepository.criarUsuario(u);
+                notificacao.sucesso("Usuário cadastrado com sucesso!\n");
             }
-
-
         } catch (SQLException e) {
             e.printStackTrace();
-            MessageHelper.error("Erro ao salvar usuário!\n");
+            notificacao.erro("Erro ao salvar usuário!\n");
         }
 
-        MessageHelper.success("Usuário cadastrado com sucesso!\n");
         return uMapper.toDto(u);
     }
 
-    public List<UsuarioResponseDTO> listarUsuarios(){
+    @Override
+    public List<UsuarioResponseDTO> listarUsuarios() {
         List<UsuarioResponseDTO> dtoList = new ArrayList<>();
 
-        try{
+        try {
             List<Usuario> usuarioList = uRepository.listarUsuarios();
 
-            if(usuarioList.isEmpty()){
-                MessageHelper.error("Nenhum usuário encontrado!");
-            }else{
-
-                for(Usuario u: usuarioList){
+            if (usuarioList.isEmpty()) {
+                notificacao.erro("Nenhum usuário encontrado!");
+            } else {
+                for (Usuario u : usuarioList) {
                     dtoList.add(uMapper.toDto(u));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            MessageHelper.error("Erro ao listar os usuários");
+            notificacao.erro("Erro ao listar os usuários");
         }
         return dtoList;
     }
 
-    public Map<Integer, String> idsNomeClubeUsuario(){
+    @Override
+    public Map<Integer, String> idsNomeClubeUsuario() {
         Map<Integer, String> idsNomeClubeUsuario = new HashMap<>();
-        try{
+        try {
             idsNomeClubeUsuario = uRepository.listarIdENomeClubeUsuario();
         } catch (SQLException e) {
             e.printStackTrace();
-            MessageHelper.error("Erro ao listar os usuários");
+            notificacao.erro("Erro ao listar os usuários");
         }
         return idsNomeClubeUsuario;
+    }
+
+    @Override
+    public List<UsuarioResponseDTO> listarUsuariosDeUmClube(int id) {
+        List<UsuarioResponseDTO> usuarioResponseDTO = new ArrayList<>();
+        try {
+            List<Usuario> usuarioList = uRepository.listarJogadorPorClube(id);
+
+            if (usuarioList.isEmpty()) {
+                notificacao.erro("Nenhum usuário encontrado!");
+            } else {
+                for (Usuario u : usuarioList) {
+                    usuarioResponseDTO.add(uMapper.toDto(u));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            notificacao.erro("Erro ao listar os usuários");
+        }
+
+        return usuarioResponseDTO;
     }
 }

@@ -96,6 +96,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                 nome,
                 peso, 
                 altura,
+                tipo,
                 id_clube
                 FROM 
                 usuario
@@ -112,6 +113,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                         rs.getString("nome"),
                         rs.getDouble("peso"),
                         rs.getInt("altura"),
+                        TipoUsuario.valueOf(rs.getString("tipo")),
                         rs.getInt("id_clube")
                 );
                 usuarios.add(usuario);
@@ -133,6 +135,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                 nome,
                 peso, 
                 altura,
+                tipo,
                 id_clube
                 FROM 
                 usuario
@@ -149,6 +152,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                         rs.getString("nome"),
                         rs.getDouble("peso"),
                         rs.getInt("altura"),
+                        TipoUsuario.valueOf(rs.getString("tipo")),
                         rs.getInt("id_clube")
                 );
                 usuarios.add(usuario);
@@ -170,6 +174,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                 nome,
                 peso, 
                 altura,
+                tipo,
                 id_clube
                 FROM 
                 usuario
@@ -186,6 +191,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                         rs.getString("nome"),
                         rs.getDouble("peso"),
                         rs.getInt("altura"),
+                        TipoUsuario.valueOf(rs.getString("tipo")),
                         rs.getInt("id_clube")
                 );
                 usuarios.add(usuario);
@@ -205,6 +211,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                 nome,
                 peso,
                 altura,
+                tipo,
                 id_clube
                 FROM usuario
                 WHERE id = ? AND tipo = 'JOGADOR'
@@ -222,6 +229,7 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                         rs.getString("nome"),
                         rs.getDouble("peso"),
                         rs.getInt("altura"),
+                        TipoUsuario.valueOf(rs.getString("tipo")),
                         rs.getInt("id_clube")
                 );
                 return usuario;
@@ -236,10 +244,10 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
         List<Usuario> jogadores = new ArrayList<>();
 
         String sql =  """
-                SELECT u.id, u.nome, u.peso, u.altura, c.nome AS nome_clube
+                SELECT u.id, u.nome, u.peso, u.altura, u.tipo, c.nome AS nome_clube
                 FROM usuario u
                 JOIN clube c ON u.id_clube = c.id
-                WHERE u.id_clube = ? AND u.tipo = 'Jogador'
+                WHERE u.id_clube = ? AND u.tipo = 'JOGADOR'
                 """;
 
         try(Connection conn = Conexao.conectar();
@@ -255,14 +263,14 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
                         rs.getString("nome"),
                         rs.getDouble("peso"),
                         rs.getInt("altura"),
-                        rs.getInt("id_clube")
+                        TipoUsuario.valueOf(rs.getString("tipo")),
+                        clubeId
                 );
 
                 jogadores.add(jogador);
-                return jogadores;
             }
         }
-        return null;
+        return jogadores;
     }
 
     @Override
