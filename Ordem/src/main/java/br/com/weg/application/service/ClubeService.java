@@ -4,47 +4,66 @@ import br.com.weg.application.dto.Clube.ClubeRequestDTO;
 import br.com.weg.application.dto.Clube.ClubeResponseDTO;
 import br.com.weg.application.mapper.ClubeMapper;
 import br.com.weg.domain.entity.Clube;
+import br.com.weg.domain.notification.INotificacao;
 import br.com.weg.domain.repository.ClubeRepository;
+import br.com.weg.domain.service.IClubeService;
+import br.com.weg.infra.notification.ConsoleNotificacao;
 import br.com.weg.infra.persistence.ClubeRepositoryImpl;
-import br.com.weg.presentation.view.helpers.MessageHelper;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClubeService {
+public class ClubeService implements IClubeService {
 
-    ClubeMapper clubeMapper = new ClubeMapper();
-    ClubeRepository clubeRepository = new ClubeRepositoryImpl();
+    private final ClubeMapper clubeMapper = new ClubeMapper();
+    private final ClubeRepository clubeRepository;
+    private INotificacao notificacao;
 
-    public ClubeResponseDTO criarClube(ClubeRequestDTO clubeRequestDTO){
+    public ClubeService() {
+        this.clubeRepository = new ClubeRepositoryImpl();
+        this.notificacao = new ConsoleNotificacao();
+    }
+
+    public ClubeService(ClubeRepository clubeRepository, INotificacao notificacao) {
+        this.clubeRepository = clubeRepository;
+        this.notificacao = notificacao;
+    }
+
+    public void setNotificacao(INotificacao notificacao) {
+        this.notificacao = notificacao;
+    }
+
+    @Override
+    public ClubeResponseDTO criarClube(ClubeRequestDTO clubeRequestDTO) {
         Clube clube = clubeMapper.toEntity(clubeRequestDTO);
         Clube clubeSalvo = null;
-        try{
+        try {
             clubeSalvo = clubeRepository.criarClube(clube);
-        } catch (SQLException e ){
-            MessageHelper.error("Erro ao salvar clube\n");
+            notificacao.sucesso("Clube Cadastrado com Sucesso!\n");
+        } catch (SQLException e) {
+            notificacao.erro("Erro ao salvar clube\n");
         }
 
-        MessageHelper.success("Clube Cadastrado com Sucesso!\n");
-        assert clubeSalvo != null;
+        if (clubeSalvo == null) return null;
         return clubeMapper.toDto(clubeSalvo);
     }
 
-    public List<ClubeResponseDTO> mostrarClubes(){
+    @Override
+    public List<ClubeResponseDTO> mostrarClubes() {
         List<Clube> clubeList = new ArrayList<>();
         List<ClubeResponseDTO> clubeResponseDTOList = new ArrayList<>();
-        try{
+        try {
             clubeList = clubeRepository.listarClubes();
 
-            if(clubeList.isEmpty()){
-                MessageHelper.error("Nenhum clube encontrado!");
+            if (clubeList.isEmpty()) {
+                notificacao.erro("Nenhum clube encontrado!");
             }
-        }catch (SQLException e ){
-            MessageHelper.error("Erro ao retornar os dados de clubes.");
+        } catch (SQLException e) {
+            notificacao.erro("Erro ao retornar os dados de clubes.");
         }
 
-        for(Clube c : clubeList){
+        for (Clube c : clubeList) {
             clubeResponseDTOList.add(clubeMapper.toDto(c));
         }
         return clubeResponseDTOList;
