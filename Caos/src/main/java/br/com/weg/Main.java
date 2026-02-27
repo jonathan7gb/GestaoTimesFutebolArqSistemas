@@ -9,9 +9,9 @@ public class Main {
     public static void main(String[] args) throws Exception {
         // VIOLAÇÃO DE DIP: Dependência direta de Scanner e Conexão Hardcoded
         Scanner s = new Scanner(System.in);
-        String url = "jdbc:mysql://localhost:3306/gestao_futebol_caos?useSSL=false&serverTimezone=UTC";
+        String url = "jdbc:mysql://localhost:3306/?useSSL=false&serverTimezone=UTC";
         String user = "root";
-        String pass = "kauafelix123@";
+        String pass = "mysqlPW";
 
         System.out.println("!!! BEM-VINDO AO SISTEMA DE GESTÃO DO CAOS FC !!!");
 
@@ -22,7 +22,7 @@ public class Main {
             // VIOLAÇÃO DE SRP: A Main controla o fluxo, o banco, a lógica e o erro
             if (op.equals("1")) {
                 Clube c = new Clube();
-                System.out.print("Nome do Time: "); c.nome = s.next(); // Atributo público!
+                System.out.print("Nome do Time: "); c.nome = s.next();
                 System.out.print("País: "); c.pais = s.next();
 
                 Connection conn = DriverManager.getConnection(url, user, pass);
