@@ -1,33 +1,26 @@
 package br.com.weg.presentation.controller;
 
 
-import br.com.weg.application.dto.Clube.ClubeRequestDTO;
-import br.com.weg.application.dto.Partida.PartidaRequestDTO;
-import br.com.weg.application.dto.Partida.PartidaResponseDTO;
-import br.com.weg.application.dto.Usuario.UsuarioRequestDTO;
-import br.com.weg.application.dto.Usuario.UsuarioResponseDTO;
-import br.com.weg.application.service.ClubeService;
-import br.com.weg.application.service.PartidaService;
-import br.com.weg.application.service.UsuarioService;
+import br.com.weg.domain.service.IClubeService;
+import br.com.weg.domain.service.IPartidaService;
+import br.com.weg.domain.service.IUsuarioService;
 import br.com.weg.presentation.view.AdminView;
 import br.com.weg.presentation.view.ClubeView;
 import br.com.weg.presentation.view.PartidaView;
 import br.com.weg.presentation.view.UsuarioView;
 import br.com.weg.presentation.view.helpers.MessageHelper;
 
-import java.util.List;
-
 public class MainController {
 
-    ClubeService clubeService = new ClubeService();
-    PartidaService partidaService = new PartidaService();
-    UsuarioService usuarioService = new UsuarioService();
+    private final IClubeService clubeService;
+    private final IPartidaService partidaService;
+    private final IUsuarioService usuarioService;
     AdminView adminView = new AdminView();
     ClubeView clubeView = new ClubeView();
     PartidaView partidaView = new PartidaView();
     UsuarioView usuarioView = new UsuarioView();
 
-    public MainController(ClubeService clubeService, PartidaService partidaService, UsuarioService usuarioService){
+    public MainController(IClubeService clubeService, IPartidaService partidaService, IUsuarioService usuarioService) {
         this.clubeService = clubeService;
         this.partidaService = partidaService;
         this.usuarioService = usuarioService;
