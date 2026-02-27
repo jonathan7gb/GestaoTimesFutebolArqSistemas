@@ -21,14 +21,15 @@ public class Main {
 
             // VIOLAÇÃO DE SRP: A Main controla o fluxo, o banco, a lógica e o erro
             if (op.equals("1")) {
-                Clube c = new Clube(); // Instanciação direta (new)
+                Clube c = new Clube();
                 System.out.print("Nome do Time: "); c.nome = s.next(); // Atributo público!
                 System.out.print("País: "); c.pais = s.next();
 
                 Connection conn = DriverManager.getConnection(url, user, pass);
                 String sql = "INSERT INTO clube (nome, pais) VALUES ('" + c.nome + "', '" + c.pais + "')";
                 PreparedStatement ps = conn.prepareStatement(sql);
-                System.out.println("Clube inserido via String concatenada! (Boa sorte com as aspas)");
+                ps.executeUpdate();
+                System.out.println("Clube inserido com SQL concatenado, sem validação, mas quem liga?!");
                 conn.close();
 
             } else if (op.equals("2")) {
@@ -43,11 +44,13 @@ public class Main {
                         System.out.println("JOGADOR FORA DE FORMA! Aplicando multa de R$ 500 no banco agora...");
                         Connection conn = DriverManager.getConnection(url, user, pass);
                         PreparedStatement ps = conn.prepareStatement("UPDATE usuario SET multa = 500 WHERE nome = '" + u.nome + "'");
+                        ps.executeUpdate();
                     }
                 }
 
                 Connection conn = DriverManager.getConnection(url, user, pass);
                 PreparedStatement ps = conn.prepareStatement("INSERT INTO usuario (nome, tipo) VALUES ('" + u.nome + "', '" + u.tipo + "')");
+                ps.executeUpdate();
                 conn.close();
 
             } else if (op.equals("3")) {
@@ -65,20 +68,19 @@ public class Main {
                 System.out.println("Bônus calculado no 'olhômetro': " + bonus);
 
             } else if (op.equals("4")) {
-                // VIOLAÇÃO DE LSP: Vamos tentar fazer o Presidente jogar.
-                System.out.println("Iniciando partida... Chamando o Presidente para bater o pênalti!");
-
+                System.out.println("Iniciando partida...");
                 MembroFutebol pres = new MembroFutebol() {
-                    public void jogar() { throw new RuntimeException("ERRO FATAL: Presidente infartou tentando correr!"); }
+                    public void jogar() { System.out.println("Presidente assistindo do camarote."); }
                     public void treinar() { System.out.println("Presidente olhando o treino de terno."); }
                     public void contratar() { System.out.println("Contratando..."); }
                     public void demitir() { System.out.println("Demitindo..."); }
-                    public void cobrarEscanteio() { throw new RuntimeException("Erro: Sapato social não chuta bola!"); }
+                    public void cobrarEscanteio() { System.out.println("Presidente chutando a bola para fora."); }
                 };
 
                 pres.jogar();
 
-            } else if (op.equals("0")) {
+
+        } else if (op.equals("0")) {
                 break;
             } else {
                 System.out.println("Opção que não existe, mas o sistema nem valida direito.");
