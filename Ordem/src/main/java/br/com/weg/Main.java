@@ -7,6 +7,7 @@ import br.com.weg.application.service.UsuarioService;
 import br.com.weg.domain.notification.INotificacao;
 import br.com.weg.infra.notification.ConsoleNotificacao;
 import br.com.weg.infra.notification.SilentNotificacao;
+import br.com.weg.infra.strategies.MenuStrategy;
 import br.com.weg.presentation.controller.MainController;
 import br.com.weg.presentation.view.helpers.MessageHelper;
 
@@ -49,8 +50,7 @@ public class Main {
         partidaService.setNotificacao(notificacao);
         usuarioService.setNotificacao(notificacao);
 
-        // MainController depende das interfaces (DIP), não das classes concretas
-        MainController mainController = new MainController(clubeService, partidaService, usuarioService);
+        MainController mainController = new MainController();
 
         mainController.startSystem();
     }
