@@ -1,118 +1,47 @@
 package br.com.weg.presentation.controller;
 
-
-import br.com.weg.domain.service.IClubeService;
-import br.com.weg.domain.service.IPartidaService;
-import br.com.weg.domain.service.IUsuarioService;
+import br.com.weg.infra.strategies.*;
 import br.com.weg.presentation.view.AdminView;
-import br.com.weg.presentation.view.ClubeView;
-import br.com.weg.presentation.view.PartidaView;
-import br.com.weg.presentation.view.UsuarioView;
 import br.com.weg.presentation.view.helpers.MessageHelper;
 
 public class MainController {
 
-    private final IClubeService clubeService;
-    private final IPartidaService partidaService;
-    private final IUsuarioService usuarioService;
-    AdminView adminView = new AdminView();
-    ClubeView clubeView = new ClubeView();
-    PartidaView partidaView = new PartidaView();
-    UsuarioView usuarioView = new UsuarioView();
+    private MenuStrategy menuStrategy;
+    private AdminView adminView = new AdminView();
 
-    public MainController(IClubeService clubeService, IPartidaService partidaService, IUsuarioService usuarioService) {
-        this.clubeService = clubeService;
-        this.partidaService = partidaService;
-        this.usuarioService = usuarioService;
-    }
+    public MainController() {}
 
     public void startSystem() {
         while (true) {
             int escolhaPrincipal = adminView.menuPrincipal();
             System.out.println();
 
-            switch (escolhaPrincipal) {
-                case 1 -> menuJogador();
-                case 2 -> menuComissao();
-                case 3 -> menuPresidente();
-                case 4 -> menuAdmin();
-                case 0 -> {
-                    return;
-                }
-                default -> MessageHelper.error("Escolha inválida");
+            if (escolhaPrincipal == 0) {
+                System.out.println("Saindo do sistema...");
+                return;
+            }
+
+            changeMenu(escolhaPrincipal);
+
+            if (this.menuStrategy != null) {
+                executeMenu();
+            } else {
+                MessageHelper.error("Escolha inválida. Tente novamente.");
             }
         }
     }
 
-    private void menuJogador() {
-        while (true) {
-            int escolha = usuarioView.jogadorMenu();
-            if (escolha == 0) break;
-
-            switch (escolha) {
-                case 1 -> {
-                    int idClube = clubeView.pedirIdClube();
-                    usuarioView.listarUsuarios(usuarioService.listarUsuariosDeUmClube(idClube), usuarioService.idsNomeClubeUsuario());
-                }
-                case 2 -> {
-                    int idClube = clubeView.pedirIdClube();
-                    partidaView.listarPartidas(partidaService.listarPartidasPorClube(idClube), partidaService.retornarNomesClubesPartidas());
-                }
-            }
-        }
+    public void executeMenu() {
+        this.menuStrategy.menu();
     }
 
-    private void menuComissao() {
-        while (true) {
-            int escolha = usuarioView.comissaoMenu();
-            if (escolha == 0) break;
-
-            switch (escolha) {
-                case 1 -> {
-                    int idClube = clubeView.pedirIdClube();
-                    usuarioView.listarUsuarios(usuarioService.listarUsuariosDeUmClube(idClube), usuarioService.idsNomeClubeUsuario());
-                }
-                case 2 -> {
-                    int idClube = clubeView.pedirIdClube();
-                    partidaView.listarPartidas(partidaService.listarPartidasPorClube(idClube), partidaService.retornarNomesClubesPartidas());
-                }
-            }
-        }
-    }
-
-    private void menuPresidente() {
-        while (true) {
-            int escolha = usuarioView.presidenteMenu();
-            if (escolha == 0) break;
-
-            switch (escolha) {
-                case 1 -> usuarioService.criarUsuario(usuarioView.criarUsuarioPresidente());
-                case 2 -> partidaService.criarPartida(partidaView.criarPartida());
-                case 3 -> {
-                    int idClube = clubeView.pedirIdClube();
-                    usuarioView.listarUsuarios(usuarioService.listarUsuariosDeUmClube(idClube), usuarioService.idsNomeClubeUsuario());
-                }
-                case 4 -> {
-                    int idClube = clubeView.pedirIdClube();
-                    partidaView.listarPartidas(partidaService.listarPartidasPorClube(idClube), partidaService.retornarNomesClubesPartidas());
-                }
-            }
-        }
-    }
-
-    private void menuAdmin() {
-        while (true) {
-            int escolha = adminView.adminMenu();
-            if (escolha == 0) break;
-
-            switch (escolha) {
-                case 1 -> clubeService.criarClube(clubeView.criarClube());
-                case 2 -> usuarioService.criarUsuario(usuarioView.criarUsuario());
-                case 3 -> partidaService.criarPartida(partidaView.criarPartida());
-                case 4 -> clubeView.listarClubes(clubeService.mostrarClubes());
-                case 5 -> usuarioView.listarUsuarios(usuarioService.listarUsuarios(), usuarioService.idsNomeClubeUsuario());
-                case 6 -> partidaView.listarPartidas(partidaService.listarPartidas(), partidaService.retornarNomesClubesPartidas());
-            }
+    public void changeMenu(int opcao) {
+        switch (opcao) {
+            case 1 -> this.menuStrategy = new MenuJogador();
+            case 2 -> this.menuStrategy = new MenuComissao();
+            case 3 -> this.menuStrategy = new MenuPresidente();
+            case 4 -> this.menuStrategy = new MenuAdmin();
+            default -> this.menuStrategy = null;
         }
     }
 }
