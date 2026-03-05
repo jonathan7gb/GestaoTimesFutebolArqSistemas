@@ -97,7 +97,7 @@ public class UsuarioService implements IUsuarioService {
             List<Usuario> usuarioList = uRepository.listarJogadorPorClube(id);
 
             if (usuarioList.isEmpty()) {
-                notificacao.erro("Nenhum usuário encontrado!");
+                notificacao.erro("Nenhum usuário encontrado/Id do clube inválido!");
             } else {
                 for (Usuario u : usuarioList) {
                     usuarioResponseDTO.add(uMapper.toDto(u));
