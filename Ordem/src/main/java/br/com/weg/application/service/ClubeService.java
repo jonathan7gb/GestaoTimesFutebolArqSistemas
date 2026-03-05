@@ -7,30 +7,33 @@ import br.com.weg.domain.entity.Clube;
 import br.com.weg.domain.notification.INotificacao;
 import br.com.weg.domain.repository.ClubeRepository;
 import br.com.weg.domain.service.IClubeService;
-import br.com.weg.infra.notification.ConsoleNotificacao;
-import br.com.weg.infra.persistence.ClubeRepositoryImpl;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Serviço de Clube — camada de Aplicação.
+ *
+ * SOLID aplicado:
+ *  S (SRP) — responsabilidade única: apenas regras de negócio de clube.
+ *  D (DIP) — depende somente das abstrações ClubeRepository e INotificacao
+ *             definidas no domínio; nenhuma referência a classes concretas
+ *             de infraestrutura nesta camada.
+ */
 public class ClubeService implements IClubeService {
 
     private final ClubeMapper clubeMapper = new ClubeMapper();
     private final ClubeRepository clubeRepository;
-    private INotificacao notificacao;
+    private final INotificacao notificacao;
 
-    public ClubeService() {
-        this.clubeRepository = new ClubeRepositoryImpl();
-        this.notificacao = new ConsoleNotificacao();
-    }
-
+    /**
+     * Construtor com injeção de dependências.
+     * As implementações concretas são fornecidas pela camada de entrada (Main),
+     * mantendo esta classe desacoplada de qualquer detalhe de infraestrutura.
+     */
     public ClubeService(ClubeRepository clubeRepository, INotificacao notificacao) {
         this.clubeRepository = clubeRepository;
-        this.notificacao = notificacao;
-    }
-
-    public void setNotificacao(INotificacao notificacao) {
         this.notificacao = notificacao;
     }
 

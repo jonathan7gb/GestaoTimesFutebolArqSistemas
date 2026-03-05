@@ -88,24 +88,92 @@ Ordem/src/main/java/br/com/weg/
 
 ## 🧱 Princípios SOLID aplicados no módulo Ordem
 
-### S — Single Responsibility (Responsabilidade Única)
-Cada classe tem exatamente uma responsabilidade:
-- `ClubeService` → apenas regras de negócio relacionadas a clube
-- `ClubeRepositoryImpl` → apenas persistência de clube no banco de dados
-- `ClubeMapper` → apenas conversão entre `Clube` (entidade) e `ClubeResponseDTO`
-- `MessageHelper` → apenas exibição de mensagens de sucesso/erro no console
+### S — Single Responsibility Principle (Responsabilidade Única)
 
-### O — Open/Closed (Aberto/Fechado)
-Novas funcionalidades são adicionadas criando novas classes que implementam as interfaces existentes, sem modificar o código já testado.
+> *"Uma classe deve ter apenas um motivo para mudar."*
 
-### L — Liskov Substitution (Substituição de Liskov)
-`ClubeRepositoryImpl`, `PartidaRepositoryImpl` e `UsuarioRepositoryImpl` implementam suas respectivas interfaces do domínio (`ClubeRepository`, `PartidaRepository`, `UsuarioRepository`) e podem ser substituídas sem quebrar o comportamento esperado.
+Cada classe possui exatamente uma responsabilidade bem definida:
 
-### I — Interface Segregation (Segregação de Interfaces)
-Em vez de uma única interface `MembroFutebol` com todos os métodos possíveis (como no módulo Caos), as interfaces são coesas e específicas por contexto (repositórios separados para cada entidade de domínio).
+| Classe | Responsabilidade |
+|---|---|
+| `ClubeService` | Apenas regras de negócio relacionadas a clube |
+| `PartidaService` | Apenas regras de negócio relacionadas a partida |
+| `UsuarioService` | Apenas regras de negócio relacionadas a usuário |
+| `ClubeRepositoryImpl` | Apenas persistência de clube no banco de dados |
+| `ClubeMapper` | Apenas conversão entre `Clube` (entidade) e `ClubeResponseDTO` |
+| `MessageHelper` | Apenas exibição de mensagens no console |
+| `InputHelper` | Apenas leitura e validação de entrada do usuário |
+| `ConsoleNotificacao` | Apenas envio de notificações coloridas ao console |
+| `MainController` | Apenas orquestração da navegação entre menus |
 
-### D — Dependency Inversion (Inversão de Dependências)
-Os serviços (`ClubeService`, `PartidaService`, `UsuarioService`) dependem das **abstrações** definidas em `domain/repository`, não das implementações concretas em `infra/persistence`. A camada de domínio não conhece a camada de infraestrutura.
+**Por quê?** — Quando uma responsabilidade muda (ex.: formato das mensagens), somente a classe correspondente (`MessageHelper`) precisa ser alterada; as demais ficam intocadas.
+
+---
+
+### O — Open/Closed Principle (Aberto/Fechado)
+
+> *"Uma classe deve estar aberta para extensão e fechada para modificação."*
+
+A interface `INotificacao` (em `domain/notification`) define o contrato de notificação. Novas estratégias de envio são adicionadas criando uma nova classe que implementa essa interface, **sem alterar nenhum código existente**:
+
+```
+INotificacao (interface)
+├── ConsoleNotificacao  ← exibe mensagens coloridas no terminal
+└── SilentNotificacao   ← descarta todas as mensagens (modo silencioso)
+```
+
+Da mesma forma, as interfaces de repositório (`ClubeRepository`, `PartidaRepository`, `UsuarioRepository`) permitem que novas implementações de persistência (ex.: em memória, em arquivo) sejam adicionadas sem modificar os serviços.
+
+**Por quê?** — O `Main` seleciona a estratégia de notificação em tempo de execução; os serviços nunca precisam ser alterados para suportar um novo modo de notificação.
+
+---
+
+### L — Liskov Substitution Principle (Substituição de Liskov)
+
+> *"Classes derivadas devem poder substituir suas classes base sem alterar o comportamento esperado."*
+
+`ClubeRepositoryImpl`, `PartidaRepositoryImpl` e `UsuarioRepositoryImpl` implementam completamente os contratos de `ClubeRepository`, `PartidaRepository` e `UsuarioRepository`, respectivamente. O `MainController` recebe instâncias de `IClubeService`, `IPartidaService` e `IUsuarioService`; qualquer implementação concreta pode substituir a atual sem quebrar o sistema.
+
+**Por quê?** — Garante que os testes e o código de produção possam usar implementações substitutas (ex.: stubs em memória) sem comportamento inesperado.
+
+---
+
+### I — Interface Segregation Principle (Segregação de Interfaces)
+
+> *"Nenhum cliente deve ser forçado a depender de métodos que não utiliza."*
+
+Em vez de uma única interface monolítica com todos os métodos possíveis (como `MembroFutebol` no módulo Caos), as interfaces são pequenas e coesas:
+
+| Interface | Métodos |
+|---|---|
+| `ClubeRepository` | `criarClube`, `listarClubes`, `existeId` |
+| `PartidaRepository` | `criarPartida`, `listarPartidas`, `buscarPartidaPorClube`, `listarNomeClubes` |
+| `UsuarioRepository` | `criarUsuario`, `listarUsuarios`, `listarJogador`, `buscarJogadorPorId`, … |
+| `IClubeService` | `criarClube`, `mostrarClubes` |
+| `IPartidaService` | `criarPartida`, `listarPartidas`, `listarPartidasPorClube`, `retornarNomesClubesPartidas` |
+| `IUsuarioService` | `criarUsuario`, `listarUsuarios`, `idsNomeClubeUsuario`, `listarUsuariosDeUmClube` |
+| `INotificacao` | `sucesso`, `erro`, `info` |
+
+**Por quê?** — Cada implementação assina apenas o contrato relevante para si, sem herdar métodos sem sentido para o seu contexto.
+
+---
+
+### D — Dependency Inversion Principle (Inversão de Dependências)
+
+> *"Módulos de alto nível não devem depender de módulos de baixo nível. Ambos devem depender de abstrações."*
+
+O fluxo de dependência no módulo Ordem é:
+
+```
+presentation  →  application  →  domain (interfaces)  ←  infra
+```
+
+- `MainController` depende de `IClubeService`, `IPartidaService`, `IUsuarioService` (interfaces do domínio).
+- `ClubeService`, `PartidaService`, `UsuarioService` dependem de `ClubeRepository`, `PartidaRepository`, `UsuarioRepository` e `INotificacao` (interfaces do domínio) — **nenhum import de classe concreta de infraestrutura existe nestas classes**.
+- `ClubeRepositoryImpl`, `PartidaRepositoryImpl`, `UsuarioRepositoryImpl`, `ConsoleNotificacao` e `SilentNotificacao` implementam as interfaces do domínio.
+- `Main.java` é a única classe que conhece as implementações concretas e as injeta via construtor.
+
+**Por quê?** — Isola a lógica de negócio de detalhes técnicos (banco de dados, console). Trocar o banco de PostgreSQL para outro ou o modo de notificação requer apenas mudar `Main.java`, sem tocar nos serviços.
 
 ---
 
