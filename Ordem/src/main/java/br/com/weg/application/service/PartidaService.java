@@ -7,8 +7,6 @@ import br.com.weg.domain.entity.Partida;
 import br.com.weg.domain.notification.INotificacao;
 import br.com.weg.domain.repository.PartidaRepository;
 import br.com.weg.domain.service.IPartidaService;
-import br.com.weg.infra.notification.ConsoleNotificacao;
-import br.com.weg.infra.persistence.PartidaRepositoryImpl;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,23 +14,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Serviço de Partida — camada de Aplicação.
+ *
+ * SOLID aplicado:
+ *  S (SRP) — responsabilidade única: apenas regras de negócio de partida.
+ *  D (DIP) — depende somente das abstrações PartidaRepository e INotificacao
+ *             definidas no domínio; nenhuma referência a classes concretas
+ *             de infraestrutura nesta camada.
+ */
 public class PartidaService implements IPartidaService {
 
     private final PartidaRepository partidaRepository;
     private final PartidaMapper partidaMapper = new PartidaMapper();
-    private INotificacao notificacao;
+    private final INotificacao notificacao;
 
-    public PartidaService() {
-        this.partidaRepository = new PartidaRepositoryImpl();
-        this.notificacao = new ConsoleNotificacao();
-    }
-
+    /**
+     * Construtor com injeção de dependências.
+     * As implementações concretas são fornecidas pela camada de entrada (Main),
+     * mantendo esta classe desacoplada de qualquer detalhe de infraestrutura.
+     */
     public PartidaService(PartidaRepository partidaRepository, INotificacao notificacao) {
         this.partidaRepository = partidaRepository;
-        this.notificacao = notificacao;
-    }
-
-    public void setNotificacao(INotificacao notificacao) {
         this.notificacao = notificacao;
     }
 

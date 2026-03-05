@@ -7,8 +7,6 @@ import br.com.weg.domain.entity.Usuario;
 import br.com.weg.domain.notification.INotificacao;
 import br.com.weg.domain.repository.UsuarioRepository;
 import br.com.weg.domain.service.IUsuarioService;
-import br.com.weg.infra.notification.ConsoleNotificacao;
-import br.com.weg.infra.persistence.UsuarioRepositoryImpl;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,23 +14,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Serviço de Usuario — camada de Aplicação.
+ *
+ * SOLID aplicado:
+ *  S (SRP) — responsabilidade única: apenas regras de negócio de usuário.
+ *  D (DIP) — depende somente das abstrações UsuarioRepository e INotificacao
+ *             definidas no domínio; nenhuma referência a classes concretas
+ *             de infraestrutura nesta camada.
+ */
 public class UsuarioService implements IUsuarioService {
 
     private final UsuarioMapper uMapper = new UsuarioMapper();
     private final UsuarioRepository uRepository;
-    private INotificacao notificacao;
+    private final INotificacao notificacao;
 
-    public UsuarioService() {
-        this.uRepository = new UsuarioRepositoryImpl();
-        this.notificacao = new ConsoleNotificacao();
-    }
-
+    /**
+     * Construtor com injeção de dependências.
+     * As implementações concretas são fornecidas pela camada de entrada (Main),
+     * mantendo esta classe desacoplada de qualquer detalhe de infraestrutura.
+     */
     public UsuarioService(UsuarioRepository uRepository, INotificacao notificacao) {
         this.uRepository = uRepository;
-        this.notificacao = notificacao;
-    }
-
-    public void setNotificacao(INotificacao notificacao) {
         this.notificacao = notificacao;
     }
 
@@ -97,7 +100,7 @@ public class UsuarioService implements IUsuarioService {
             List<Usuario> usuarioList = uRepository.listarJogadorPorClube(id);
 
             if (usuarioList.isEmpty()) {
-                notificacao.erro("Nenhum usuário encontrado!");
+                notificacao.erro("Nenhum usuário encontrado/Id do clube inválido!");
             } else {
                 for (Usuario u : usuarioList) {
                     usuarioResponseDTO.add(uMapper.toDto(u));
