@@ -15,10 +15,6 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
-        // -----------------------------------------------------------------------
-        // Demonstração do Padrão Strategy: escolha da estratégia de notificação
-        // em tempo de execução, sem alterar o código dos serviços.
-        // -----------------------------------------------------------------------
         Scanner sc = new Scanner(System.in);
 
         MessageHelper.info("=== SISTEMA DE GESTÃO DE TIMES DE FUTEBOL ===");
@@ -40,7 +36,6 @@ public class Main {
             MessageHelper.info("Estratégia: Modo Console ativado.");
         }
 
-        // Serviços criados com a estratégia de notificação selecionada
         ClubeService clubeService = new ClubeService();
         PartidaService partidaService = new PartidaService();
         UsuarioService usuarioService = new UsuarioService();
@@ -49,7 +44,6 @@ public class Main {
         partidaService.setNotificacao(notificacao);
         usuarioService.setNotificacao(notificacao);
 
-        // MainController depende das interfaces (DIP), não das classes concretas
         MainController mainController = new MainController(clubeService, partidaService, usuarioService);
 
         mainController.startSystem();
